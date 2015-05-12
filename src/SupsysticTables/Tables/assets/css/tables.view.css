@@ -1,0 +1,36 @@
+.tables-view .table-title-wrap {
+  margin-bottom: 15px;
+}
+.tables-view .table-title-wrap .table-title {
+  float: left;
+}
+.tables-view .table-title-wrap .table-buttons {
+  float: left;
+  margin-top: 8px;
+}
+.tables-view .table-title-wrap .table-buttons .button {
+  margin-left: 5px;
+}
+.tables-view .table-title-wrap .table-buttons > .table-buttons-left {
+  float: left;
+}
+.tables-view .table-title-wrap .table-buttons > .table-buttons-right {
+  float: right;
+}
+.tables-view .form-table label i.fa-question-circle {
+  color: #a4aaac;
+}
+.tables-view .form-table label i.fa-question-circle:hover {
+  color: #333;
+}
+.tables-view .row-tab {
+  display: none;
+  margin-top: 15px;
+}
+.tables-view .subsubsub li a.button {
+  margin-right: 2px;
+}
+.tables-view .subsubsub li a.button.current {
+  background-color: #4ae8ea;
+  font-weight: normal;
+}

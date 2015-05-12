@@ -1,0 +1,55 @@
+{% spaceless %}
+    <div class="supsystic-tables-wrap">
+        <table class="supsystic-table {{ table.settings.styling | keys | join(' ') }} {% if 'border' in table.settings.styling | keys %}{{ table.settings.styling.border }}{% endif %}" id="supsystic-table-{{ table.id }}" data-features="{{ table.settings.features | keys | json_encode }}">
+
+            {% if table.settings.elements.caption is defined %}
+                <caption>{{ table.title | title }}</caption>
+            {% endif %}
+
+
+            <thead>
+            <tr>
+                {% for column in table.rows | first %}
+                    {% for cell in column %}
+                        {% if table.settings.elements.head is defined %}
+                            <th width="{{ cell.width }}">{{ cell.data }}</th>
+                        {% else %}
+                            <th>&nbsp;</th>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            </thead>
+
+
+            {% if table.settings.elements.foot is defined %}
+                <tfoot>
+                <tr>
+                    {% for column in table.rows | first %}
+                        {% for cell in column %}
+                            <th width="{{ cell.width }}">{{ cell.data }}</th>
+                        {% endfor %}
+                    {% endfor %}
+                </tr>
+                </tfoot>
+            {% endif %}
+
+            <tbody>
+            {% for row in table.rows | slice(table.settings.elements.head or table.settings.elements.foot is defined ? 1 : 0) %}
+                <tr {% if row.height != 'NaN' and row.height | length > 1 %}style="height: {{ row.height }}px"{% endif %}>
+                    {% for cell in row.cells %}
+                        <td class="{{ cell.meta | join(' ') }}">{{ cell.data }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+        <!-- /#supsystic-table-{{ table.id }}.supsystic-table -->
+    </div>
+    <!-- /.supsystic-tables-wrap -->
+
+    <!-- Tables Generator by Supsystic -->
+    <!-- Version: {{ environment.getConfig().get('plugin_version') }} -->
+    <!-- http://supsystic.com/ -->
+{% endspaceless %}
