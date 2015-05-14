@@ -56,3 +56,19 @@
   margin-top: 11px;
   color: #333;
 }
+/* Formula editor */
+#formulaEditor .formula-icon {
+  float: left;
+  font-size: .8em;
+  width: 50px;
+  text-align: center;
+  margin-top: 8px;
+}
+#formulaEditor .formula-icon .function {
+  font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+  font-size: 1.3em;
+}
+#formulaEditor #formula {
+  float: left;
+  font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+}

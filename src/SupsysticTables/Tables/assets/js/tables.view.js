@@ -14,7 +14,8 @@
                 contextMenu: true,
                 startRows: app.getParameterByName('rows') || 5,
                 startCols: app.getParameterByName('cols') || 5,
-                outsideClickDeselects: false
+                outsideClickDeselects: false,
+                formulas: true
             });
         }
 
@@ -50,7 +51,8 @@
 
                         app.Models.Tables.render(app.getParameterByName('id'))
                             .done(function (response) {
-                                var $preview = $(response.table);
+                                var $preview = $(response.table),
+                                    table;
 
                                 if ($_previewTable !== null) {
                                     $_previewTable.destroy();
@@ -58,8 +60,15 @@
                                 }
 
                                 $container.empty().append($preview);
+                                table = $container.find('table');
 
-                                $_previewTable = app.initializeTable($container.find('table'));
+                                $_previewTable = app.initializeTable(table);
+
+                                table.on('draw.dt init.dt', function () {
+                                    window.ruleJS($container.find('table').attr('id')).init();
+                                });
+
+                                table.trigger('init.dt');
                             });
                     });
                 }
@@ -129,7 +138,9 @@
 
         var toolbar = new app.Editor.Toolbar('#tableToolbar', editor);
         toolbar.subscribe();
-        window.tb = toolbar;
+
+        var formula = new app.Editor.Formula(editor);
+        formula.subscribe();
 
         var loading = $.when(
             //app.Models.Tables.getColumns(tableId),
@@ -147,6 +158,14 @@
             if (rows.length > 0) {
                 var data = [], meta = [], heights = [], widths = [];
 
+                // Colors
+                var $style = $('#supsystic-tables-style');
+
+                if (!$style.length) {
+                    $style = $('<style/>', { id: 'supsystic-tables-style' });
+                    $('head').append($style);
+                }
+
                 $.each(rows, function (x, row) {
                     var cells = [];
 
@@ -156,6 +175,17 @@
                         cells.push(cell.data);
 
                         if ('meta' in cell && cell.meta !== undefined) {
+                            var color = /color\-([0-9abcdef]{6})/.exec(cell.meta),
+                                background = /bg\-([0-9abcdef]{6})/.exec(cell.meta);
+                            
+                            if (null !== color) {
+                                $style.html($style.html() + ' .'+color[0]+' {color:#'+color[1]+'}');
+                            }
+
+                            if (null !== background) {
+                                $style.html($style.html() + ' .'+background[0]+' {background:#'+background[1]+' !important}');
+                            }
+
                             meta.push({ row: x, col: y, className: cell.meta });
                         }
 
@@ -166,8 +196,6 @@
 
                     data.push(cells);
                 });
-
-                console.log(widths);
 
                 // Height & width
                 editor.updateSettings({
@@ -185,6 +213,14 @@
             }
 
             editor.render();
+
+            editor.addHook('afterRender', function () {
+                var tableWidth = parseInt($(editor.rootElement).find('.ht_clone_top').width());
+
+                // 50 = "f(x)" block width
+                $('#formula').css({width: tableWidth - 50 });
+            });
+
         }).fail(function (error) {
             alert('Failed to load table data: ' + error);
         }).always(function () {

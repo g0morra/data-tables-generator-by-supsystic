@@ -43,16 +43,13 @@
             for (var col = range.from.col; col <= range.to.col; col++) {
                 var cell = $(editor.getCell(row, col));
 
-                cell.toggleClass(className);
+                cell.toggleClass(className.replace(/^\s+|\s+$/g, ''));
+
                 editor.setCellMeta(
                     row,
                     col,
                     'className',
-                    $.trim(cell.attr('class')
-                            .replace('current', '')
-                            .replace('area', '')
-                            .replace('selected', '')
-                    )
+                    cell.attr('class').replace(/current|area|selected|^\s+|\s+$/gi, '')
                 );
             }
         }
@@ -69,21 +66,58 @@
             for (var col = range.from.col; col <= range.to.col; col++) {
                 var cell = $(editor.getCell(row, col));
 
-                cell.removeClass(function () {
-                    return replace.join(' ');
+                cell.removeClass(function (index, className) {
+                    if ($.isArray(replace)) {
+                        return replace.join(' ');
+                    }
+
+                    if ($.isFunction(replace)) {
+                        return replace(className);
+                    }
+
+                    return replace;
                 });
 
-                cell.addClass(className);
+                cell.addClass(className.replace(/^\s+|\s+$/g, ''));
 
                 editor.setCellMeta(
                     row,
                     col,
                     'className',
                     $.trim(cell.attr('class')
-                        .replace('current', '')
-                        .replace('area', '')
-                        .replace('selected', '')
+                            .replace('current', '')
+                            .replace('area', '')
+                            .replace('selected', '')
+                            .replace(/^\s+|\s+$/g, '')
                     )
+                );
+            }
+        }
+    };
+
+    var removeClass = function (editor, className) {
+        var range = getValidRange(editor.getSelectedRange());
+
+        if (range === undefined) {
+            return;
+        }
+
+        for (var row = range.from.row; row <= range.to.row; row++) {
+            for (var col = range.from.col; col <= range.to.col; col++) {
+                var cell = $(editor.getCell(row, col));
+
+                cell.attr(
+                    'class',
+                    cell.attr('class')
+                        .replace(className, '')
+                        .replace(/^\s+|\s+$/g, "")
+                );
+
+                editor.setCellMeta(
+                    row,
+                    col,
+                    'className',
+                    cell.attr('class').replace(/current|area|selected|^\s+|\s+$/gi, "")
                 );
             }
         }
@@ -129,6 +163,50 @@
             replaceClass(this.getEditor(), 'htBottom', ['htTop', 'htMiddle']);
 
             this.getEditor().render();
+        },
+        row: function () {
+            this.getEditor().alter('insert_row');
+        },
+        column: function () {
+            this.getEditor().alter('insert_col');
+        },
+        color: function (color) {
+            var $style = $('#supsystic-tables-style');
+
+            if (!$style.length) {
+                $style = $('<style/>', { id: 'supsystic-tables-style' });
+
+                $('head').append($style);
+            }
+
+            $style.html($style.html() + ' .color-'+color+' {color:#'+color+'}');
+
+            removeClass(this.getEditor(), /color\-([0-9a-f]{6})/gi);
+            toggleClass(this.getEditor(), 'color-' + color);
+
+            this.getEditor().render();
+        },
+        background: function (color) {
+            if (color === 'ffffff') {
+                removeClass(this.getEditor(), new RegExp('bg\-([0-9abcdef]{6})'));
+
+                return;
+            }
+
+            var $style = $('#supsystic-tables-style');
+
+            if (!$style.length) {
+                $style = $('<style/>', { id: 'supsystic-tables-style' });
+
+                $('head').append($style);
+            }
+
+            $style.html($style.html() + ' .bg-'+color+' {background:#'+color+' !important}');
+
+            removeClass(this.getEditor(), /bg\-([0-9a-f]{6})/gi);
+            toggleClass(this.getEditor(), 'bg-'+color);
+
+            this.getEditor().render();
         }
     };
 
@@ -160,6 +238,40 @@
                         methods[method].apply(self);
                     });
                 }
+
+                var $textColor = $('#textColor').ColorPicker({
+                    onChange: function (hsb, hex, rgb) {
+                        self.call('color', hex);
+                    }
+                });
+
+                var $bgColor = $('#bgColor').ColorPicker({
+                    onChange: function (hsb, hex, rgb) {
+                        self.call('background', hex);
+                    }
+                });
+
+                self.getEditor().addHook('afterSelection', function (startRow, startCol, endRow, endCol) {
+                    if (startRow !== endRow || startCol !== endCol) {
+                        return;
+                    }
+
+                    var cell = self.getEditor().getCell(startRow, startCol),
+                        color = /color\-([0-9abcdef]{6})/.exec(cell.className),
+                        background = /bg\-([0-9abcdef]{6})/.exec(cell.className);
+                    
+                    if (null !== color) {
+                        $textColor.css({borderBottomColor: '#'+color[1]});
+                    } else {
+                        $textColor.css({borderBottomColor: 'transparent'});
+                    }
+
+                    if (null !== background && background[1] !== 'ffffff') {
+                        $bgColor.css({borderBottomColor: '#'+background[1]});
+                    } else {
+                        $bgColor.css({borderBottomColor: 'transparent'});
+                    }
+                });
             });
 
             this.getContainer().find('button').each(function () {
@@ -168,19 +280,19 @@
                 if ($button.data('toolbar') !== undefined) {
                     $button.toolbar({
                         content: $button.data('toolbar'),
-                        position: 'bottom'
+                        position: 'bottom',
+                        hideOnClick: true
                     });
                 }
-            })
+            });
         };
-
 
         Toolbar.prototype.call = function (method) {
             if (methods[method] === undefined) {
                 throw new Error('The method "' + method + '" is not exists.');
             }
 
-            methods[method].apply(this);
+            methods[method].apply(this, Array.prototype.slice.call(arguments, 1, arguments.length));
         };
 
         return Toolbar;

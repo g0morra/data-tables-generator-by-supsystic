@@ -25,7 +25,7 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
         $version = $environment->getConfig()->get('plugin_version');
         $cachingAllowed = $environment->isProd();
 
-        $ui->add($ui->createScript('jquery')->setHookName($hookName));
+        $ui->add($ui->createScript('jquery')->setHookName($dynamicHookName));
         $ui->add(
             $ui->createStyle('supsystic-tables-datatables-css')
                 ->setHookName($dynamicHookName)
@@ -44,16 +44,6 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
         );
 
         $ui->add(
-            $ui->createScript('supsystic-tables-shortcode')
-                ->setHookName($dynamicHookName)
-                ->setModuleSource($this, 'js/tables.shortcode.js')
-                ->setVersion($version)
-                ->setCachingAllowed($cachingAllowed)
-                ->addDependency('jquery')
-                ->addDependency('supsystic-tables-datatables-js')
-        );
-
-        $ui->add(
             $ui->createStyle('supsystic-tables-shortcode-css')
                 ->setHookName($dynamicHookName)
                 ->setModuleSource($this, 'css/tables.shortcode.css')
@@ -61,10 +51,17 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                 ->setCachingAllowed($cachingAllowed)
         );
 
+        /* RuleJS */
+        $this->loadRuleJS($ui);
+
         /* Backend scripts */
         if ($environment->isModule('tables')) {
             $ui->add(
                 $ui->createScript('jquery-ui-dialog')
+            );
+
+            $ui->add(
+                $ui->createScript('jquery-ui-autocomplete')
             );
 
             $ui->add(
@@ -95,6 +92,21 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                         ->setVersion($version)
                 );
 
+                /* Color Picker */
+                $ui->add(
+                    $ui->createStyle('supsystic-tables-colorpicker-css')
+                        ->setHookName($hookName)
+                        ->setModuleSource($this, 'libraries/colorpicker/colorpicker.css')
+                        ->setCachingAllowed(true)
+                );
+
+                $ui->add(
+                    $ui->createScript('supsystic-tables-colorpicker-js')
+                        ->setHookName($hookName)
+                        ->setModuleSource($this, 'libraries/colorpicker/colorpicker.js')
+                        ->setCachingAllowed(true)
+                );
+
                 /* Toolbar */
                 $ui->add(
                     $ui->createStyle('supsystic-tables-toolbar-css')
@@ -116,7 +128,7 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                         ->setHookName($hookName)
                         ->setModuleSource($this, 'libraries/handsontable/handsontable.full.min.css')
                         ->setCachingAllowed(true)
-                        ->setVersion('0.14.1')
+                        ->setVersion('0.15.1-BETA2')
                 );
 
                 $ui->add(
@@ -124,7 +136,7 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                         ->setHookName($hookName)
                         ->setModuleSource($this, 'libraries/handsontable/handsontable.full.min.js')
                         ->setCachingAllowed(true)
-                        ->setVersion('0.14.1')
+                        ->setVersion('0.15.1-BETA2')
                 );
 
                 $ui->add(
@@ -133,6 +145,15 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                         ->setModuleSource($this, 'js/editor/tables.editor.toolbar.js')
                         ->setCachingAllowed($cachingAllowed)
                         ->setVersion($version)
+                );
+
+                $ui->add(
+                    $ui->createScript('supsystic-tables-editor-formula-js')
+                        ->setHookName($hookName)
+                        ->setModuleSource($this, 'js/editor/tables.editor.formula.js')
+                        ->setCachingAllowed($cachingAllowed)
+                        ->setVersion($version)
+                        ->addDependency('jquery-ui-autocomplete')
                 );
 
                 $ui->add(
@@ -152,6 +173,17 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                 );
             }
         }
+
+        $ui->add(
+            $ui->createScript('supsystic-tables-shortcode')
+                ->setHookName($dynamicHookName)
+                ->setModuleSource($this, 'js/tables.shortcode.js')
+                ->setVersion($version)
+                ->setCachingAllowed($cachingAllowed)
+                ->addDependency('jquery')
+                ->addDependency('supsystic-tables-datatables-js')
+                ->addDependency('supsystic-tables-rulejs-js')
+        );
     }
 
     /**
@@ -221,6 +253,50 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                 $callable,
                 array('is_safe' => array('html'))
             )
+        );
+    }
+
+    private function loadRuleJS(SupsysticTables_Ui_Module $ui)
+    {
+        $hookName = 'admin_enqueue_scripts';
+        $dynamicHookName = is_admin() ? $hookName : 'wp_enqueue_scripts';
+
+        if (is_admin() && !$this->getEnvironment()->isModule('tables', 'view')) {
+            return;
+        }
+
+        /* External Libraries */
+        $ui->add(
+            $ui->createScript('supsystic-tables-rulejs-libs-js')
+                ->setHookName($dynamicHookName)
+                ->setModuleSource($this, 'libraries/ruleJS/ruleJS.lib.full.js')
+        );
+
+        /* RuleJS */
+        $ui->add(
+            $ui->createScript('supsystic-tables-rulejs-parser-js')
+                ->setHookName($dynamicHookName)
+                ->setModuleSource($this, 'libraries/ruleJS/parser.js')
+        );
+
+        $ui->add(
+            $ui->createScript('supsystic-tables-rulejs-js')
+                ->setHookName($dynamicHookName)
+                ->setModuleSource($this, 'libraries/ruleJS/ruleJS.js')
+        );
+
+        /* Handsontable Module */
+        $ui->add(
+            $ui->createScript('supsystic-tables-rulejs-hot-js')
+                ->setHookName($hookName)
+                ->setModuleSource($this, 'libraries/ruleJS/handsontable.formula.js')
+                ->addDependency('supsystic-tables-handsontable-js')
+        );
+
+        $ui->add(
+            $ui->createStyle('supsystic-tables-rulejs-hot-css')
+                ->setHookName($hookName)
+                ->setModuleSource($this, 'libraries/ruleJS/handsontable.formula.css')
         );
     }
 

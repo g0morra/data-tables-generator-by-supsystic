@@ -478,7 +478,7 @@ h2.nav-tab-wrapper, h3.nav-tab-wrapper {
 .supsystic-sticky-active {
     position: fixed !important;
     /*top: 32px;*/
-    z-index: 9998;
+    z-index: 700;
 }
 
 .supsystic-sticky-active.supsystic-sticky-active-bordered {

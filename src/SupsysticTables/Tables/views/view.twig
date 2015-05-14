@@ -95,6 +95,20 @@
                     <div id="tableToolbar">
                         <ul>
                             <li>
+                                <button {{ tooltip.attr(environment.translate('Insert row')) }} data-method="row">
+                                    <i class="fa fa-fw fa-long-arrow-right"></i>
+                                    <!-- /.fa fa-fw fa-long-arrow-right -->
+                                </button>
+                            </li>
+                            <li>
+                                <button {{ tooltip.attr(environment.translate('Insert column')) }} data-method="column">
+                                    <i class="fa fa-fw fa-long-arrow-down"></i>
+                                    <!-- /.fa fa-fw fa-long-arrow-down -->
+                                </button>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
                                 <button {{ tooltip.attr(environment.translate('Bold')) }} data-method="bold">
                                     <i class="fa fa-fw fa-bold"></i>
                                     <!-- /.fa fa-fw fa-bold -->
@@ -106,18 +120,18 @@
                                     <!-- /.fa fa-fw fa-italic -->
                                 </button>
                             </li>
-                            {#<li>#}
-                                {#<button {{ tooltip.attr(environment.translate('Text color')) }}>#}
-                                    {#<i class="fa fa-fw fa-file-text-o"></i>#}
-                                    {#<!-- /.fa fa-fw fa-file-text-o -->#}
-                                {#</button>#}
-                            {#</li>#}
-                            {#<li>#}
-                                {#<button {{ tooltip.attr(environment.translate('Background color')) }}>#}
-                                    {#<i class="fa fa-fw fa-tint"></i>#}
-                                    {#<!-- /.fa fa-fw fa-tint -->#}
-                                {#</button>#}
-                            {#</li>#}
+                            <li>
+                                <button {{ tooltip.attr(environment.translate('Text color')) }} id="textColor">
+                                    <i class="fa fa-fw fa-file-text-o"></i>
+                                    <!-- /.fa fa-fw fa-file-text-o -->
+                                </button>
+                            </li>
+                            <li>
+                                <button {{ tooltip.attr(environment.translate('Background color')) }} id="bgColor">
+                                    <i class="fa fa-fw fa-tint"></i>
+                                    <!-- /.fa fa-fw fa-tint -->
+                                </button>
+                            </li>
                         </ul>
                         <ul>
                             <li>
@@ -148,22 +162,34 @@
                                 </button>
                                 <div id="toolbar-alignment-vertical" class="toolbar-content">
                                     <a href="#" data-method="top">
-                                        <i class="fa fa-fw fa-rotate-90  fa-align-left"></i>
-                                        <!-- /.fa fa-fw fa-rotate-90  fa-align-left -->
+                                        <sup><i class="fa fa-fw fa-align-center"></i></sup>
+                                        <!-- /.fa fa-fw fa-align-center -->
                                     </a>
                                     <a href="#" data-method="middle">
-                                        <i class="fa fa-fw fa-rotate-90  fa-align-center"></i>
-                                        <!-- /.fa fa-fw fa-rotate-90  fa-align-center -->
+                                        <small><i class="fa fa-fw fa-align-center"></i></small>
+                                        <!-- /.fa fa-fw fa-align-center -->
                                     </a>
                                     <a href="#" data-method="bottom">
-                                        <i class="fa fa-fw fa-rotate-90  fa-align-right"></i>
-                                        <!-- /.fa fa-fw fa-rotate-90  fa-align-right -->
+                                        <sub style="bottom: -.6em"><i class="fa fa-fw fa-align-center"></i></sub>
+                                        <!-- /.fa fa-fw fa-align-right -->
                                     </a>
                                 </div>
                             </li>
                         </ul>
                     </div>
                     <!-- /#tableToolbar -->
+
+                    <div id="formulaEditor">
+                        <span class="formula-icon">
+                            <em class="function">f</em>(&times;)
+                        </span>
+                        <!-- /.formula-icon -->
+                        <input type="text" id="formula"/>
+                        <!-- /#formula -->
+                        <div class="clear"></div>
+                        <!-- /.clear -->
+                    </div>
+                    <!-- /#formulaEditor -->
 
                     <div id="tableEditor"></div>
                     <!-- /#tableEditor -->
@@ -299,7 +325,7 @@
                                 <th scope="row">
                                     <label for="styling-border">
                                         {{ environment.translate('Borders') }}
-                                        {{ tooltip.icon(environment.translate('Cell - adds border around all four sides of each cell, Row - adds border around only the top an bottom of each each (i.e. for the rows).')) }}
+                                        {{ tooltip.icon(environment.translate('Cell - adds border around all four sides of each cell, Row – adds border only over and under each row. (i.e. only for the rows).')) }}
                                     </label>
                                 </th>
                                 <td>

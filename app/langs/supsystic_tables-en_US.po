@@ -1,6 +1,5 @@
 msgid ""
 msgstr ""
-
 msgid "An error has occurred"
 msgstr ""
 
@@ -62,6 +61,12 @@ msgid "Preview"
 msgstr ""
 
 msgid "Loading your table, please wait..."
+msgstr ""
+
+msgid "Insert row"
+msgstr ""
+
+msgid "Insert column"
 msgstr ""
 
 msgid "Bold"

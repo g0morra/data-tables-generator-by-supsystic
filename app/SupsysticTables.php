@@ -50,7 +50,7 @@ class SupsysticTables
                 'admin_url'        => admin_url(),
                 'plugin_db_update' => true,
                 'revision_key'     => '_supsystic_tables_rev',
-                'revision'         => 10
+                'revision'         => 11
             )
         );
 

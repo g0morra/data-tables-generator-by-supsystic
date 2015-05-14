@@ -1,4 +1,7 @@
 {% spaceless %}
+
+    {% set cols = 'A'..'Z' %}
+
     <div class="supsystic-tables-wrap">
         <table class="supsystic-table {{ table.settings.styling | keys | join(' ') }} {% if 'border' in table.settings.styling | keys %}{{ table.settings.styling.border }}{% endif %}" id="supsystic-table-{{ table.id }}" data-features="{{ table.settings.features | keys | json_encode }}">
 
@@ -35,10 +38,12 @@
             {% endif %}
 
             <tbody>
-            {% for row in table.rows | slice(table.settings.elements.head or table.settings.elements.foot is defined ? 1 : 0) %}
+            {% for row in table.rows | slice(table.settings.elements.head or table.settings.elements.foot ? 1 : 0) %}
+                {% set rowNumber = loop.index + (table.settings.elements.head or table.settings.elements.foot ? 1 : 0) %}
+
                 <tr {% if row.height != 'NaN' and row.height | length > 1 %}style="height: {{ row.height }}px"{% endif %}>
                     {% for cell in row.cells %}
-                        <td class="{{ cell.meta | join(' ') }}">{{ cell.data }}</td>
+                        <td id="{{ cols[loop.index0] ~ rowNumber }}" class="{{ cell.meta | join(' ') | trim }}" {% if cell.data[:1] == '=' %}data-formula="{{ cell.data | slice(1) }}"{% endif %}>{{ cell.data }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}
