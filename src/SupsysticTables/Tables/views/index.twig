@@ -11,6 +11,7 @@
                         environment.translate('Title'),
                         environment.translate('Created'),
                         environment.translate('Shortcode'),
+                        environment.translate('PHP'),
                         environment.translate('Actions')]
                     %}
 
@@ -53,6 +54,9 @@
                                     <code>
                                         [{{ environment.config.get('shortcode_name') }} id="{{ table.id }}"]
                                     </code>
+                                </td>
+                                <td>
+                                    {{ "<?php echo supsystic_tables_get(%s); ?>" | format(table.id) | highlight(true) }}
                                 </td>
                                 <td>
                                     <a class="button button-small"

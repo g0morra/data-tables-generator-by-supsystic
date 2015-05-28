@@ -95,16 +95,38 @@
                     <div id="tableToolbar">
                         <ul>
                             <li>
-                                <button {{ tooltip.attr(environment.translate('Insert row')) }} data-method="row">
-                                    <i class="fa fa-fw fa-long-arrow-right"></i>
-                                    <!-- /.fa fa-fw fa-long-arrow-right -->
+                                <button {{ tooltip.attr(environment.translate('Rows')) }} data-toolbar="#toolbar-rows">
+                                    <i class="fa fa-fw fa-th-list"></i>
+                                    <!-- /.fa fa-fw fa-th-list -->
                                 </button>
+                                <div id="toolbar-rows" class="toolbar-content">
+                                    <a href="#" data-method="row">
+                                        <i class="fa fa-fw fa-plus"></i>
+                                        <!-- /.fa fa-fw fa-plus -->
+                                    </a>
+                                    <a href="#" data-method="remove_row">
+                                        <i class="fa fa-fw fa-trash-o"></i>
+                                        <!-- /.fa fa-fw fa-trash-o -->
+                                    </a>
+                                </div>
+                                <!-- /#toolbar-rows -->
                             </li>
                             <li>
-                                <button {{ tooltip.attr(environment.translate('Insert column')) }} data-method="column">
-                                    <i class="fa fa-fw fa-long-arrow-down"></i>
-                                    <!-- /.fa fa-fw fa-long-arrow-down -->
+                                <button {{ tooltip.attr(environment.translate('Columns')) }} data-toolbar="#toolbar-cols">
+                                    <i class="fa fa-fw fa-th-large"></i>
+                                    <!-- /.fa fa-fw fa-th-large -->
                                 </button>
+                                <div id="toolbar-cols" class="toolbar-content">
+                                    <a href="#" data-method="column">
+                                        <i class="fa fa-fw fa-plus"></i>
+                                        <!-- /.fa fa-fw fa-plus -->
+                                    </a>
+                                    <a href="#" data-method="remove_col">
+                                        <i class="fa fa-fw fa-trash-o"></i>
+                                        <!-- /.fa fa-fw fa-trash-o -->
+                                    </a>
+                                </div>
+                                <!-- /#toolbar-cols -->
                             </li>
                         </ul>
                         <ul>
@@ -310,6 +332,20 @@
                                 <td>
                                     <input type="checkbox" name="features[state_save]"
                                             {{ checkbox.checked(table.settings.features.state_save) }}
+                                           id="features-state-saving"/>
+                                    <!-- /#features-state-saving -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <label for="features-state-saving">
+                                        {{ environment.translate('Info') }}
+                                        {{ tooltip.icon(environment.translate('Table information display field.')) }}
+                                    </label>
+                                </th>
+                                <td>
+                                    <input type="checkbox" name="features[info]"
+                                            {{ checkbox.checked(table.settings.features.info) }}
                                            id="features-state-saving"/>
                                     <!-- /#features-state-saving -->
                                 </td>

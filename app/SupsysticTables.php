@@ -15,7 +15,7 @@ class SupsysticTables
         }
 
         $pluginPath = dirname(dirname(__FILE__));
-        $environment = new Rsc_Environment('st', '0.1', $pluginPath);
+        $environment = new Rsc_Environment('st', '1.0.5', $pluginPath);
 
         /* Configure */
         $environment->configure(
@@ -43,7 +43,7 @@ class SupsysticTables
                     'icon_url'   => '',
                     'position'   => '102.2',
                 ),
-                'shortcode_name'   => 'supsystic-tables',
+                'shortcode_name'   => defined('SUPSYSTIC_TABLES_SHORTCODE_NAME') ? SUPSYSTIC_TABLES_SHORTCODE_NAME : 'supsystic-tables',
                 'db_prefix'        => 'supsystic_tbl_',
                 'hooks_prefix'     => 'supsystic_tbl_',
                 'ajax_url'         => admin_url('admin-ajax.php'),

@@ -9,6 +9,7 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
 
         $this->registerShortcode();
         $this->registerTwigTableRender();
+        $this->addTwigHighlighter();
     }
 
     /**
@@ -297,6 +298,19 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
             $ui->createStyle('supsystic-tables-rulejs-hot-css')
                 ->setHookName($hookName)
                 ->setModuleSource($this, 'libraries/ruleJS/handsontable.formula.css')
+        );
+    }
+
+    private function addTwigHighlighter()
+    {
+        $twig = $this->getEnvironment()->getTwig();
+
+        $twig->addFilter(
+            new Twig_SimpleFilter(
+                'highlight',
+                'highlight_string',
+                array('is_safe' => array('html'))
+            )
         );
     }
 

@@ -65,7 +65,8 @@
                 ordering: false,
                 paging: false,
                 searching: false,
-                stateSave: false
+                stateSave: false,
+                info: false
             };
 
             var $table = (table instanceof $ ? table : $(table)),

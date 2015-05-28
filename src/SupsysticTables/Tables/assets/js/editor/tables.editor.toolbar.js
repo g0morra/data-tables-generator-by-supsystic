@@ -1,5 +1,7 @@
 (function ($, app, undefined) {
 
+    var classRegExp = /current|area|selected|formula|^\s+|\s+$/gi;
+
     var getValidRange = function (range) {
         if (range === undefined) {
             return undefined;
@@ -84,12 +86,7 @@
                     row,
                     col,
                     'className',
-                    $.trim(cell.attr('class')
-                            .replace('current', '')
-                            .replace('area', '')
-                            .replace('selected', '')
-                            .replace(/^\s+|\s+$/g, '')
-                    )
+                    cell.attr('class').replace(classRegExp, '')
                 );
             }
         }
@@ -117,7 +114,7 @@
                     row,
                     col,
                     'className',
-                    cell.attr('class').replace(/current|area|selected|^\s+|\s+$/gi, "")
+                    cell.attr('class').replace(classRegExp, '')
                 );
             }
         }
@@ -169,6 +166,42 @@
         },
         column: function () {
             this.getEditor().alter('insert_col');
+        },
+        remove_row: function () {
+            var selection = this.getEditor().getSelectedRange();
+
+            if (selection === undefined) {
+                return;
+            }
+
+            var amount = selection.to.row - selection.from.row + 1,
+                selected = this.getEditor().getSelected(),
+                entireColumnSelection = [0, selected[1], this.getEditor().countRows() - 1, selected[1]],
+                columnSelected = entireColumnSelection.join(',') == selected.join(',');
+
+            if (selected[0] < 0 || columnSelected) {
+                return;
+            }
+
+            this.getEditor().alter('remove_row', selection.from.row, amount);
+        },
+        remove_col: function () {
+            var selection = this.getEditor().getSelectedRange();
+
+            if (selection === undefined) {
+                return;
+            }
+
+            var amount = selection.to.col - selection.from.col + 1,
+                selected = this.getEditor().getSelected(),
+                entireRowSelection = [selected[0], 0, selected[0], this.getEditor().countCols() - 1],
+                rowSelected = entireRowSelection.join(',') == selected.join(',');
+
+            if (selected[1] < 0 || rowSelected) {
+                return;
+            }
+            
+            this.getEditor().alter("remove_col", selection.from.col, amount);
         },
         color: function (color) {
             var $style = $('#supsystic-tables-style');

@@ -2,13 +2,13 @@
 Contributors: supsystic.com
 Tags: csv, csv file, csv to table, excel, table, tablesorter, post, data table, table, database, html, table generator, builder, generator, cells
 Tested up to: 4.2.2
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 
 Create and manage beautiful data tables with custom design. No HTML knowledge is required.
 
 == Description ==
 
-Create and manage tables easily from admin panel quick, easy and effective. Make data table responsive, sorting, pagination, filtering and more
+Create and manage tables from admin panel quick, easy and effective. Make data table responsive, sorting, pagination, filtering and more. (Data Tables by Supsystic)[http://supsystic.com/plugins/data-tables-generator-plugin/ "Data Tables WordPress plugin"] plugin features:
 
 * No coding require
 * Responsive tables
@@ -106,7 +106,28 @@ After you change some settings – with responsive data tables plugin, you can i
 3. Paste the shortcode into your post or page and Data Tables Generator by Supsystic will automatically create table on your page.
 Important! Shortcode must be inserted in a text editor page, and not in the visual.
 
+= Our plugins =
+
+* [Social Share Buttons by Supsystic](https://wordpress.org/plugins/social-share-buttons-by-supsystic/ "Social Share Buttons by Supsystic")
+* [Data Tables Generator by Supsystic](https://wordpress.org/plugins/data-tables-generator-by-supsystic/ "Data Tables Generator by Supsystic")
+* [Google Maps Easy](https://wordpress.org/plugins/google-maps-easy/ "Google Maps Easy")
+* [Gallery by Supsystic](https://wordpress.org/plugins/gallery-by-supsystic/ "Gallery by Supsystic")
+* [Backup by Supsystic](https://wordpress.org/plugins/backup-by-supsystic/ "Backup by Supsystic")
+* [Lightbox by Supsystic](https://wordpress.org/plugins/lightbox-by-supsystic/ "Lightbox by Supsystic")
+* [Slider by Supsystic](https://wordpress.org/plugins/slider-by-supsystic/ "Slider by Supsystic")
+* [PopUp by Supsystic](https://wordpress.org/plugins/popup-by-supsystic/ "PopUp by Supsystic")
+* [Security by Supsystic](https://wordpress.org/plugins/security-by-supsystic/ "Security by Supsystic")
+* [Secure Login by Supsystic](https://wordpress.org/plugins/secure-login-by-supsystic/ "Secure Login by Supsystic")
+
+
 == Changelog ==
+
+= 1.0.5 / 28.05.2015 =
+ * Added PHP code
+ * Added "Info" feature toggle
+ * Changed toolbar
+ * Added "Remove row" and "Remove column" buttons
+ * Core code improvements and minor issues fix
 
 = 1.0.4 / 13.05.2015 =
  * Fixed not working formulas on the first page of the "Preview" tab
