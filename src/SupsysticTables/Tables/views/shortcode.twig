@@ -15,7 +15,7 @@
                 {% for column in table.rows | first %}
                     {% for cell in column %}
                         {% if table.settings.elements.head is defined %}
-                            <th width="{{ cell.width }}">{{ cell.data }}</th>
+                            <th width="{{ cell.width }}">{{ cell.data | raw }}</th>
                         {% else %}
                             <th>&nbsp;</th>
                         {% endif %}
@@ -30,7 +30,7 @@
                 <tr>
                     {% for column in table.rows | first %}
                         {% for cell in column %}
-                            <th width="{{ cell.width }}">{{ cell.data }}</th>
+                            <th width="{{ cell.width }}">{{ cell.data | raw }}</th>
                         {% endfor %}
                     {% endfor %}
                 </tr>
@@ -43,7 +43,7 @@
 
                 <tr {% if row.height != 'NaN' and row.height | length > 1 %}style="height: {{ row.height }}px"{% endif %}>
                     {% for cell in row.cells %}
-                        <td id="{{ cols[loop.index0] ~ rowNumber }}" class="{{ cell.meta | join(' ') | trim }}" {% if cell.data[:1] == '=' %}data-formula="{{ cell.data | slice(1) }}"{% endif %}>{{ cell.data }}</td>
+                        <td id="{{ cols[loop.index0] ~ rowNumber }}" class="{{ cell.meta | join(' ') | trim }}" {% if cell.data[:1] == '=' %}data-formula="{{ cell.data | slice(1) }}"{% endif %}>{{ cell.data | raw }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}

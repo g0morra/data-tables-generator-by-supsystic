@@ -15,7 +15,8 @@
                 startRows: app.getParameterByName('rows') || 5,
                 startCols: app.getParameterByName('cols') || 5,
                 outsideClickDeselects: false,
-                formulas: true
+                formulas: true,
+                renderer: 'html'
             });
         }
 

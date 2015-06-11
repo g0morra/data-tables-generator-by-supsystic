@@ -1,5 +1,6 @@
 msgid ""
 msgstr ""
+
 msgid "An error has occurred"
 msgstr ""
 
@@ -19,6 +20,9 @@ msgid "Created"
 msgstr ""
 
 msgid "Shortcode"
+msgstr ""
+
+msgid "PHP"
 msgstr ""
 
 msgid "Actions"
@@ -61,12 +65,6 @@ msgid "Preview"
 msgstr ""
 
 msgid "Loading your table, please wait..."
-msgstr ""
-
-msgid "Insert row"
-msgstr ""
-
-msgid "Insert column"
 msgstr ""
 
 msgid "Bold"
@@ -120,13 +118,19 @@ msgstr ""
 msgid "State saving - restore table state on page reload."
 msgstr ""
 
+msgid "Info"
+msgstr ""
+
+msgid "Table information display field."
+msgstr ""
+
 msgid "Styling"
 msgstr ""
 
 msgid "Borders"
 msgstr ""
 
-msgid "Cell - adds border around all four sides of each cell, Row - adds border around only the top an bottom of each each (i.e. for the rows)."
+msgid "Cell - adds border around all four sides of each cell, Row – adds border only over and under each row. (i.e. only for the rows)."
 msgstr ""
 
 msgid "Cell"

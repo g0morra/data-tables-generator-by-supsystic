@@ -67,6 +67,9 @@
                 searching: false,
                 stateSave: false,
                 info: false
+                //columnDefs: [
+                //    { type: 'html', targets: '_all' }
+                //]
             };
 
             var $table = (table instanceof $ ? table : $(table)),

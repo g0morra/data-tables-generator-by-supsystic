@@ -2,26 +2,27 @@
 Contributors: supsystic.com
 Tags: csv, csv file, csv to table, excel, table, tablesorter, post, data table, table, database, html, table generator, builder, generator, cells
 Tested up to: 4.2.2
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 
 Create and manage beautiful data tables with custom design. No HTML knowledge is required.
 
 == Description ==
 
-Create and manage tables from admin panel quick, easy and effective. Make data table responsive, sorting, pagination, filtering and more. (Data Tables by Supsystic)[http://supsystic.com/plugins/data-tables-generator-plugin/ "Data Tables WordPress plugin"] plugin features:
+Create and manage tables from admin panel quick, easy and effective. Make data table responsive, sorting, pagination, filtering and more. [Data Tables by Supsystic](http://supsystic.com/plugins/data-tables-generator-plugin/ "Data Tables WordPress plugin") plugin features:
 
 * No coding require
 * Responsive tables
 * Enable table Caption, Header, Footer
 * "Bold" and "Italic" font style support for the data table cells
 * Formulas support
-* Change color of the cells and fonts
+* Change colour of the cells and fonts
+* HTML support for data cells
 
 HTML tables responsive and awesome on all devices
 
 == Screenshots ==
 
-1. Plugin Admin Area
+1. Data table Plugin Admin Area
 
 == Installation ==
 
@@ -121,6 +122,10 @@ Important! Shortcode must be inserted in a text editor page, and not in the visu
 
 
 == Changelog ==
+
+= 1.0.6 / 11.06.2015 =
+ * HTML support for data tables
+ * Minor bugs fix
 
 = 1.0.5 / 28.05.2015 =
  * Added PHP code
