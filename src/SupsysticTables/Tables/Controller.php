@@ -46,7 +46,7 @@ class SupsysticTables_Tables_Controller extends SupsysticTables_Core_BaseControl
             }
 
             $tableId = $this->getModel('tables')->add(
-                array('title' => $title)
+                array('title' => $title, 'settings' => serialize(array()))
             );
         } catch (Exception $e) {
             return $this->ajaxError($e->getMessage());
@@ -276,4 +276,59 @@ class SupsysticTables_Tables_Controller extends SupsysticTables_Core_BaseControl
     {
         return is_string($title) && ($title !== '' && strlen($title) < 255);
     }
+
+	public function checkReviewNoticeAction(Rsc_Http_Request $request) {
+		$showNotice = get_option('showTablesRevNotice');
+		$show = false;
+
+		if(!$showNotice) {
+			update_option('showTablesRevNotice', array(
+				'date' => new DateTime(),
+				'is_shown' => false
+			));
+		} else {
+			$currentDate = new DateTime();
+
+			if(($currentDate->diff($showNotice['date'])->d > 7) && $showNotice['is_shown'] != 1) {
+				$show = true;
+			}
+		}
+
+		return $this->response(
+			Rsc_Http_Response::AJAX,
+			array('show' => $show)
+		);
+	}
+
+	public function checkNoticeButtonAction(Rsc_Http_Request $request) {
+		$code  = $request->post->get('buttonCode');
+		$showNotice = get_option('showTablesRevNotice');
+
+		if($code == 'is_shown') {
+			$showNotice['is_shown'] = true;
+		} else {
+			$showNotice['date'] = new DateTime();
+		}
+
+		$this->sendUsageStat($code);
+		update_option('showTablesRevNotice', $showNotice);
+
+		return $this->response(Rsc_Http_Response::AJAX);
+	}
+
+	public function sendUsageStat($state) {
+		$apiUrl = 'http://54.68.191.217';
+
+		$reqUrl = $apiUrl . '?mod=options&action=saveUsageStat&pl=rcs';
+		$res = wp_remote_post($reqUrl, array(
+			'body' => array(
+				'site_url' => get_bloginfo('wpurl'),
+				'site_name' => get_bloginfo('name'),
+				'plugin_code' => 'stb',
+				'all_stat' => array('views' => 'review', 'code' => $state),
+			)
+		));
+
+		return true;
+	}
 }

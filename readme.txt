@@ -2,9 +2,9 @@
 Contributors: supsystic.com
 Tags: csv, csv file, csv to table, excel, table, tablesorter, post, data table, table, database, html, table generator, builder, generator, cells
 Tested up to: 4.2.2
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 
-Create and manage beautiful data tables with custom design. No HTML knowledge is required.
+Create and manage beautiful data tables with custom design, navigation with searching and ordering functions. No HTML knowledge is required.
 
 == Description ==
 
@@ -17,6 +17,13 @@ Create and manage tables from admin panel quick, easy and effective. Make data t
 * Formulas support
 * Change colour of the cells and fonts
 * HTML support for data cells
+* Supplied functions to answer statistical, engineering and financial needs.
+* Navigation with Searching and Ordering functions
+* Various style setting appropriated for any sites type
+* Restoring table state on page reloads
+* Table information display field
+
+Data Tables Generator is a new plugin created by Supsystic, which allows you to process and manage data quick and easy. Plugin able to structure information and can be adjusted for every need. Many ways of functional and visual customization of the tables improve site design and let modify it to suit any different individual or task. Searching, ordering and pagination are the functions that help everyone to find the needed information in a second. Intuitive Settings panel and responsive for a regular user Editor saved your time to spend it for other useful things or relaxation.
 
 HTML tables responsive and awesome on all devices
 
@@ -122,6 +129,9 @@ Important! Shortcode must be inserted in a text editor page, and not in the visu
 
 
 == Changelog ==
+
+= 1.0.7 / 18.06.2015 =
+ * Fixed MySQL data table creation bug
 
 = 1.0.6 / 11.06.2015 =
  * HTML support for data tables

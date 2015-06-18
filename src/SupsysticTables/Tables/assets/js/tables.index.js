@@ -116,6 +116,41 @@
         if (window.location.hash === '#add') {
             $dialog.dialog('open');
         }
+
+        var tbNoticeDialog = function() {
+            $('#reviewNotice').dialog({
+                modal:    true,
+                width:    600,
+                autoOpen: true
+            });
+        };
+
+        var tbShowReviewNotice = function() {
+
+            var request = app.request({
+                module: 'tables',
+                action: 'checkReviewNoticeAction'
+            });
+
+            request.done(function (response) {
+                if(response.show) {
+                    tbNoticeDialog();
+
+                    $('#reviewNotice [data-statistic-code]').on('click', function() {
+                        var code = $(this).data('statistic-code');
+
+                        app.request({
+                            module: 'tables',
+                            action: 'checkNoticeButton'
+                        }).done(function(response) {
+                            $('#reviewNotice').dialog('close');
+                        });
+                    });
+                }
+            });
+        };
+
+        tbShowReviewNotice();
     });
 
 }(window.jQuery, window.supsystic.Tables));
