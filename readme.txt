@@ -2,7 +2,7 @@
 Contributors: supsystic.com
 Tags: csv, csv file, csv to table, excel, table, tablesorter, post, data table, table, database, html, table generator, builder, generator, cells
 Tested up to: 4.2.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 
 Create and manage beautiful data tables with custom design, navigation with searching and ordering functions. No HTML knowledge is required.
 
@@ -129,6 +129,9 @@ Important! Shortcode must be inserted in a text editor page, and not in the visu
 
 
 == Changelog ==
+
+= 1.0.8 / 19.06.2015 =
+ * Fixed bug when saving more than 50 rows
 
 = 1.0.7 / 18.06.2015 =
  * Fixed MySQL data table creation bug

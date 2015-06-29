@@ -72,7 +72,7 @@
                 throw new Error('Invalid table id.');
             }
 
-            return this.request('updateRows', { id: id, rows: rows });
+            return this.request('updateRows', { id: id, rows: JSON.stringify(rows) });
         };
 
         TablesModel.prototype.render = function (id) {

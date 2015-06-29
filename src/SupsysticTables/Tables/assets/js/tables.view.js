@@ -57,7 +57,6 @@
 
                                 if ($_previewTable !== null) {
                                     $_previewTable.destroy();
-                                    console.log('table destroyed.');
                                 }
 
                                 $container.empty().append($preview);

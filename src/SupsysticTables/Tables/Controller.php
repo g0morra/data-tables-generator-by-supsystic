@@ -214,7 +214,7 @@ class SupsysticTables_Tables_Controller extends SupsysticTables_Core_BaseControl
         /** @var SupsysticTables_Tables_Model_Tables $tables */
         $tables = $this->getModel('tables');
         $id = $request->post->get('id');
-        $rows = $request->post->get('rows');
+        $rows = json_decode($request->post->get('rows'), true);
 
         try {
             $tables->setRows($id, $rows);
