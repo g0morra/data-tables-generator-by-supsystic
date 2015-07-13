@@ -27,10 +27,40 @@
   display: none;
   margin-top: 15px;
 }
+.tables-view .subsubsub {
+  border-bottom: 1px solid #ccc;
+  padding-left: 16px;
+  width: 100%;
+}
+.tables-view .subsubsub li {
+  margin-bottom: -1px;
+  margin-left: -1px;
+}
 .tables-view .subsubsub li a.button {
-  margin-right: 2px;
+  background-color: #eee;
+  border-color: #ccc !important;
+  color: #000 !important;
+  font-weight: bold;
 }
 .tables-view .subsubsub li a.button.current {
-  background-color: #4ae8ea;
-  font-weight: normal;
+  background-color: #fff;
+  border-bottom-color: #fff !important;
+}
+.tables-view .subsubsub li a.button.current:hover,
+.tables-view .subsubsub li a.button.current:active,
+.tables-view .subsubsub li a.button.current:focus {
+  background-color: #fff !important;
+}
+.tables-view .subsubsub li a.button:hover,
+.tables-view .subsubsub li a.button:active,
+.tables-view .subsubsub li a.button:focus {
+  background-color: #ccc !important;
+  outline: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.tables-view #css-editor {
+  position: relative;
+  height: 200px;
 }

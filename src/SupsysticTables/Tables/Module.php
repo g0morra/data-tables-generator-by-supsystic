@@ -9,6 +9,7 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
 
         $this->registerShortcode();
         $this->registerTwigTableRender();
+        $this->registerMenuItem();
         $this->addTwigHighlighter();
     }
 
@@ -127,17 +128,17 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                 $ui->add(
                     $ui->createStyle('supsystic-tables-handsontable-css')
                         ->setHookName($hookName)
-                        ->setModuleSource($this, 'libraries/handsontable/handsontable.full.min.css')
+                        ->setExternalSource('https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.min.css')
                         ->setCachingAllowed(true)
-                        ->setVersion('0.15.1-BETA2')
+                        ->setVersion('0.16.0')
                 );
 
                 $ui->add(
                     $ui->createScript('supsystic-tables-handsontable-js')
                         ->setHookName($hookName)
-                        ->setModuleSource($this, 'libraries/handsontable/handsontable.full.min.js')
+                        ->setExternalSource('https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.min.js')
                         ->setCachingAllowed(true)
-                        ->setVersion('0.15.1-BETA2')
+                        ->setVersion('0.16.0')
                 );
 
                 $ui->add(
@@ -299,6 +300,12 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                 ->setHookName($hookName)
                 ->setModuleSource($this, 'libraries/ruleJS/handsontable.formula.css')
         );
+
+        $ui->add(
+            $ui->createScript('supsystic-tables-ace-editor-js')
+                ->setHookName($hookName)
+                ->setExternalSource('https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js')
+        );
     }
 
     private function addTwigHighlighter()
@@ -312,6 +319,32 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                 array('is_safe' => array('html'))
             )
         );
+    }
+
+    private function registerMenuItem()
+    {
+        $environment = $this->getEnvironment();
+        $menu = $environment->getMenu();
+
+        $item = $menu->createSubmenuItem();
+        $item->setCapability('manage_options')
+            ->setMenuSlug($menu->getMenuSlug() . '#add')
+            ->setMenuTitle($environment->translate('Add table'))
+            ->setModuleName('tables')
+            ->setPageTitle($environment->translate('Add table'));
+
+        $menu->addSubmenuItem('add_table', $item);
+
+//        $item = $menu->createSubmenuItem();
+//        $item->setCapability('manage_options')
+//            ->setMenuSlug($menu->getMenuSlug())
+//            ->setMenuTitle($environment->translate('All tables'))
+//            ->setModuleName('tables')
+//            ->setPageTitle($environment->translate('All tables'));
+//
+//        $menu->addSubmenuItem('tables', $item);
+
+        $menu->register();
     }
 
 }

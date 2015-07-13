@@ -267,6 +267,20 @@ class SupsysticTables_Tables_Model_Tables extends SupsysticTables_Core_BaseModel
         }
     }
 
+    public function setMeta($id, array $meta)
+    {
+        $query = $this->getQueryBuilder()
+            ->update($this->getTable())
+            ->where('id', '=', (int)$id)
+            ->set(array('meta' => serialize($meta)));
+
+        $this->db->query($query->build());
+
+        if ($this->db->last_error) {
+            throw new RuntimeException($this->db->last_error);
+        }
+    }
+
     /**
      * Callback for SupsysticTables_Tables_Model_Tables::get()
      * @see SupsysticTables_Tables_Model_Tables::get()
@@ -282,6 +296,11 @@ class SupsysticTables_Tables_Model_Tables extends SupsysticTables_Core_BaseModel
         $table->columns = $this->getColumns($table->id);
         $table->rows = $this->getRows($table->id);
         $table->settings = unserialize(htmlspecialchars_decode($table->settings));
+
+        // rev 41
+        if (property_exists($table, 'meta')) {
+            $table->meta = unserialize(htmlspecialchars_decode($table->meta));
+        }
 
         return $table;
     }

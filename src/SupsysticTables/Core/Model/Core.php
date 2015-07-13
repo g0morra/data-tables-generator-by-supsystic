@@ -20,7 +20,15 @@ class SupsysticTables_Core_Model_Core extends SupsysticTables_Core_BaseModel
      */
     public function update($data)
     {
-        $this->delta($this->prepare($data));
+        $data = $this->prepare($data);
+
+        if ('alter' === substr(strtolower($data), 0, 5)) {
+            $this->db->query($data);
+
+            return;
+        }
+
+        $this->delta($data);
     }
 
     /**

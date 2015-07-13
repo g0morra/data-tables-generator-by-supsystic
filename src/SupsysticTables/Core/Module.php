@@ -17,6 +17,8 @@ class SupsysticTables_Core_Module extends SupsysticTables_Core_BaseModule
 
         $this->registerAjaxRequestHandler();
         $this->update();
+
+        add_action('admin_menu', array($this, 'removeDefaultSubMenu'), 999);
     }
 
     /**
@@ -67,6 +69,16 @@ class SupsysticTables_Core_Module extends SupsysticTables_Core_BaseModule
                 ->setVersion('1.4.2')
         );
 
+        /* iCheck */
+        $ui->add(
+            $ui->createScript('tables-iCheck')
+                ->setHookName($hookName)
+                ->setLocalSource('js/plugins/icheck.min.js')
+                ->addDependency($jquery)
+                ->setCachingAllowed(true)
+                ->setVersion('1.0.2')
+        );
+
         /* Main UI script */
         $ui->add(
             $ui->createScript('tables-ui')
@@ -100,6 +112,15 @@ class SupsysticTables_Core_Module extends SupsysticTables_Core_BaseModule
         }
 
         return $this->modelsFactory;
+    }
+
+    public function removeDefaultSubMenu()
+    {
+        global $submenu;
+
+//        if ($this->getEnvironment()->isPluginPage()) {
+//            unset($submenu[$this->getEnvironment()->getMenu()->getMenuSlug()][0]);
+//        }
     }
 
     /**

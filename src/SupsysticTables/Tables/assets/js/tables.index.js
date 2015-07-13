@@ -10,6 +10,17 @@
 
         var $tables = $('#tables');
 
+        $tables.DataTable({
+            info: false,
+            lengthChange: false,
+            columnDefs: [
+                { "orderable": false, "targets": [1, 2, 3, 4, 5] }
+            ],
+            fnInitComplete: function () {
+                $('.paginate_button').removeClass('paginate_button').addClass('button button-small');
+            }
+        });
+
         var buttonOkClick = function () {
             if ((isNaN($cols.val()) || !$cols.val().length ) || (isNaN($rows.val()) || !$rows.val().length)) {
                 $error.find('p').text('Columns and rows value must be a numbers and not empty.');
@@ -69,7 +80,13 @@
             modal: true,
             autoOpen: false,
             buttons: {
+                Cancel: function () {
+                    $dialog.dialog('close');
+                },
                 OK: buttonOkClick
+            },
+            close: function () {
+                window.location.hash = '';
             }
         });
 
@@ -113,9 +130,14 @@
             return false;
         });
 
-        if (window.location.hash === '#add') {
-            $dialog.dialog('open');
-        }
+        $(window).on('hashchange', function () {
+            console.log('catched');
+            if (window.location.hash === '#add') {
+                $dialog.dialog('open');
+            }
+        }).trigger('hashchange');
+
+        $('code').on('click', function () { window.prompt('Copy shortcode:', $.trim($(this).text())); });
 
         var tbNoticeDialog = function() {
             $('#reviewNotice').dialog({

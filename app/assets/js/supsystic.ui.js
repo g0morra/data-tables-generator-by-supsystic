@@ -22,6 +22,11 @@
         $autoHeight.each(function () {
             $(this).css({ minHeight: naviationHeight });
         });
+
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_minimal',
+            radioClass:    'iradio_minimal'
+        });
     });
 
 }(jQuery, window, 'supsystic'));

@@ -40,15 +40,46 @@
   }
 
   .subsubsub {
+    border-bottom: 1px solid #ccc;
+    padding-left: 16px;
+    width: 100%;
+
     li {
+      margin-bottom: -1px;
+      margin-left: -1px;
+
       a.button {
-        margin-right: 2px;
+        background-color: #eee;
+        border-color: #ccc !important;
+        color: #000 !important;
+        font-weight: bold;
 
         &.current {
-          background-color: #4ae8ea;
-          font-weight: normal;
+          background-color: #fff;
+          border-bottom-color: #fff !important;
+
+          &:hover,
+          &:active,
+          &:focus {
+            background-color: #fff !important;
+          }
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+          background-color: #ccc !important;
+          outline: none !important;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+          box-shadow: none;
         }
       }
     }
+  }
+
+  #css-editor {
+    position: relative;
+    height: 200px;
   }
 }

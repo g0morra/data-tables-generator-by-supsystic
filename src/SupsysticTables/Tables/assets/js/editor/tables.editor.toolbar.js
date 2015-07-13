@@ -240,6 +240,39 @@
             toggleClass(this.getEditor(), 'bg-'+color);
 
             this.getEditor().render();
+        },
+        link: function () {
+            var selection = this.getEditor().getSelectedRange(),
+                highlighted = selection === undefined ? { col: 0, row: 0 } : selection.highlight,
+                url,
+                text,
+                cellData;
+
+            url = prompt('Enter the URL:', 'http://');
+            if (null === url) {
+                return;
+            }
+
+            text = prompt('Enter text:', this.getEditor().getDataAtCell(highlighted.row, highlighted.col));
+            if (null === text) {
+                return;
+            }
+
+
+            this.getEditor().setDataAtCell(highlighted.row, highlighted.col, '<a href="'+ url +'">' + text + '</a>');
+        },
+        picture: function () {
+            var selection = this.getEditor().getSelectedRange(),
+                highlighted = selection === undefined ? { col: 0, row: 0 } : selection.highlight,
+                url;
+
+            url = prompt('Enter URL to the picture:', 'http://');
+
+            if (null === url) {
+                return;
+            }
+
+            this.getEditor().setDataAtCell(highlighted.row, highlighted.col, '<img src="' + url + '"/>');
         }
     };
 

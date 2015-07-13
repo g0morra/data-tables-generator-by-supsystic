@@ -74,6 +74,12 @@
                                 {{ environment.translate('Preview') }}
                             </a>
                         </li>
+                        <li>
+                            <a href="#row-tab-css" class="button">
+                                <i class="fa fa-fw fa-code"></i>
+                                {{ environment.translate('CSS') }}
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.col-xs-12 -->
@@ -144,7 +150,7 @@
                             </li>
                             <li>
                                 <button {{ tooltip.attr(environment.translate('Text color')) }} id="textColor">
-                                    <i class="fa fa-fw fa-file-text-o"></i>
+                                    <i class="fa fa-fw fa-font"></i>
                                     <!-- /.fa fa-fw fa-file-text-o -->
                                 </button>
                             </li>
@@ -198,6 +204,35 @@
                                 </div>
                             </li>
                         </ul>
+                        <ul>
+                            <li>
+                                <button {{ tooltip.attr(environment.translate('Create a link')) }} data-method="link">
+                                    <i class="fa fa-fw fa-link"></i>
+                                </button>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <button {{ tooltip.attr(environment.translate('Insert picture')) }} data-method="picture">
+                                    <i class="fa fa-fw fa-picture-o"></i>
+                                </button>
+                            </li>
+                        </ul>
+                        {#<ul>#}
+                            {#<li>#}
+                                {#<button {{ tooltip.attr(environment.translate('Comment')) }} data-toolbar="#toolbar-comment">#}
+                                    {#<i class="fa fa-fw fa-comment"></i>#}
+                                {#</button>#}
+                                {#<div id="toolbar-comment" class="toolbar-content">#}
+                                    {#<a href="#" data-method="addComment">#}
+                                        {#<i class="fa fa-fw fa-plus"></i>#}
+                                    {#</a>#}
+                                    {#<a href="#" data-method="removeComment">#}
+                                        {#<i class="fa fa-fw fa-trash-o"></i>#}
+                                    {#</a>#}
+                                {#</div>#}
+                            {#</li>#}
+                        {#</ul>#}
                     </div>
                     <!-- /#tableToolbar -->
 
@@ -454,6 +489,22 @@
                 <!-- /.col-xs-12 -->
             </div>
             <!-- /.row row-tab -->
+            <div class="row row-tab" id="row-tab-css">
+                <div class="col-xs-12">
+                    {% set defaultCss %}
+/* Here you can add custom CSS for the current table */
+/* Lean more about CSS: https://en.wikipedia.org/wiki/Cascading_Style_Sheets */
+
+/* To prevent the use of styles to other tables use "#supsystic-table-{{ table.id }}" as a base selector
+for example:
+#supsystic-table-{{ table.id }} { ... }
+#supsystic-table-{{ table.id }} tbody { ... }
+#supsystic-table-{{ table.id }} tbody tr { ... }
+*/
+                    {% endset %}
+                    <div id="css-editor">{% if table.meta.css | length > 0 %}{{ table.meta.css }}{% else %}{{ defaultCss }}{% endif %}</div>
+                </div>
+            </div>
         </div>
         <!-- /.container-fluid -->
     </div>

@@ -75,6 +75,22 @@
             return this.request('updateRows', { id: id, rows: JSON.stringify(rows) });
         };
 
+        TablesModel.prototype.setMeta = function (id, meta) {
+            if (isNaN(id = parseInt(id))) {
+                throw new Error('Invalid table id.');
+            }
+
+            return this.request('updateMeta', { id: id, meta: JSON.stringify(meta) });
+        };
+
+        TablesModel.prototype.getMeta = function (id) {
+            if (isNaN(id = parseInt(id))) {
+                throw new Error('Invalid table id.');
+            }
+
+            return this.request('getMeta', { id: id });
+        };
+
         TablesModel.prototype.render = function (id) {
             if (isNaN(id = parseInt(id))) {
                 throw new Error('Invalid table id.');

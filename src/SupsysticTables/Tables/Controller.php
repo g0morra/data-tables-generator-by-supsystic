@@ -267,6 +267,38 @@ class SupsysticTables_Tables_Controller extends SupsysticTables_Core_BaseControl
         return $this->ajaxSuccess(array('table' => $tables->render((int)$id)));
     }
 
+    public function updateMetaAction(Rsc_Http_Request $request)
+    {
+        /** @var SupsysticTables_Tables_Model_Tables $tables */
+        $tables = $this->getModel('tables');
+        $id = $request->post->get('id');
+        $meta = json_decode($request->post->get('meta'), true);
+
+        try {
+            $tables->setMeta($id, $meta);
+        } catch (Exception $e) {
+            return $this->ajaxError(
+                sprintf(
+                    $this->translate('Failed to save table meta data: %s'),
+                    $e->getMessage()
+                )
+            );
+        }
+
+        return $this->ajaxSuccess();
+    }
+
+    public function getMetaAction(Rsc_Http_Request $request)
+    {
+        $id = $request->post->get('id');
+        /** @var SupsysticTables_Tables_Model_Tables $tables */
+        $tables = $this->getModel('tables');
+
+        $table = $tables->getById($id);
+
+        return $this->ajaxSuccess(array('meta' => $table->meta));
+    }
+
     /**
      * Validates the table title.
      * @param string $title

@@ -6,6 +6,12 @@
             <nav class="supsystic-navigation supsystic-sticky supsystic-sticky-active">
                 <ul>
                     {% block navigation %}
+                        <li class="{% if request.query.module == 'overview' %}active{% endif %}">
+                            <a href="{{ environment.generateUrl('overview') }}">
+                                <i class="fa fa-info"></i>
+                                {{ environment.translate('Overview') }}
+                            </a>
+                        </li>
                         <li>
                             <a id="menuItem_addTable" href="{{ environment.generateUrl('tables') }}#add">
                                 <i class="fa fa-fw fa-plus"></i>

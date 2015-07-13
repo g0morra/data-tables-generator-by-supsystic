@@ -24,19 +24,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="empty" {% if tables | length > 0 %}style="display: none;"{% endif %}>
-                            <td colspan="{{ columns | length }}" align="center">
-                                {{ environment.translate('You have not any tables in this time.') }}
-                            </td>
-                        </tr>
-                        <tr class="empty" {% if tables | length > 0 %}style="display: none;"{% endif %}>
-                            <td colspan="{{ columns | length }}" align="center">
-                                <a class="button create-table" href="#">
-                                    {{ environment.translate('Create your first table') }}
-                                </a>
-                                <!-- /.button create-table -->
-                            </td>
-                        </tr>
                         {% for table in tables %}
                             <tr id="table-{{ table.id }}" data-table-id="{{ table.id }}">
                                 <td>
@@ -46,6 +33,7 @@
                                     <a href="{{ environment.generateUrl('tables', 'view', { 'id': table.id }) }}" data-toggle="tooltip" title="{{ environment.translate('Edit table "%s"') | format(table.title) }}">
                                         {{ table.title }}
                                     </a>
+                                    <i class="fa fa-fw fa-pencil"></i>
                                 </td>
                                 <td>
                                     {{ table.created_at | date('F jS \\@ H:i') }}
@@ -73,7 +61,6 @@
                                 </td>
                             </tr>
                         {% endfor %}
-
                         </tbody>
                     </table>
                     <!-- /.wp-list-table widefat -->
@@ -93,14 +80,14 @@
                 <label for="addDialog_title">
                     {{ environment.translate('Table title') }}
                 </label>
-                <input id="addDialog_title" type="text" style="width:100%;"/>
+                <input id="addDialog_title" class="supsystic-text" type="text" style="width:100%;"/>
                 <!-- /#addDialog_title.regular-text -->
                 <div class="row">
                     <div class="col-xs-6">
                         <label for="addDialog_cols">
                             {{ environment.translate('Columns') }}
                         </label>
-                        <input id="addDialog_cols" type="number" value="5" min="1" max="20" style="width: 100%"/>
+                        <input id="addDialog_cols" class="supsystic-text" type="number" value="5" min="1" max="20" style="width: 100%"/>
                         <!-- /#addDialog_cols -->
                     </div>
                     <!-- /.col-xs-6 -->
@@ -108,7 +95,7 @@
                         <label for="addDialog_rows">
                             {{ environment.translate('Rows') }}
                         </label>
-                        <input id="addDialog_rows" type="number" value="5" min="1" max="50" style="width: 100%"/>
+                        <input id="addDialog_rows" class="supsystic-text" type="number" value="5" min="1" max="50" style="width: 100%"/>
                         <!-- /#addDialog_rows -->
                     </div>
                     <!-- /.col-xs-6 -->

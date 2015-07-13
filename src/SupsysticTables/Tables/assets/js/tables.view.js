@@ -2,21 +2,27 @@
 
     $(document).ready(function () {
 
+        var ace = window.ace.edit("css-editor");
+        ace.setTheme("ace/theme/monokai");
+        ace.getSession().setMode("ace/mode/css");
+
         function initializeEditor() {
             var container = document.getElementById('tableEditor');
 
             return new Handsontable(container, {
-                rowHeaders: true,
-                colHeaders: true,
-                manualColumnResize: true,
-                manualRowResize: true,
-                colWidths: 100,
-                contextMenu: true,
-                startRows: app.getParameterByName('rows') || 5,
-                startCols: app.getParameterByName('cols') || 5,
+                colHeaders:            true,
+                colWidths:             100,
+                comments:              true,
+                contextMenu:           true,
+                formulas:              true,
+                manualColumnResize:    true,
+                manualRowResize:       true,
+                mergeCells:            true,
                 outsideClickDeselects: false,
-                formulas: true,
-                renderer: 'html'
+                renderer:              'html',
+                rowHeaders:            true,
+                startCols:             app.getParameterByName('cols') || 5,
+                startRows:             app.getParameterByName('rows') || 5
             });
         }
 
@@ -46,10 +52,15 @@
                     editor.render();
                 } else if (current === '#row-tab-preview') {
                     var $container = $(current).find('#table-preview'),
-                        $_previewTable = null;
+                        $_previewTable = null,
+                        $customCss = $('#table-custom-css');
+
+                    if (!$customCss.length) {
+                        $customCss = $('<style/>', { id: 'table-custom-css' });
+                        $('head').append($customCss);
+                    }
 
                     saveTable.call($container).done(function () {
-
                         app.Models.Tables.render(app.getParameterByName('id'))
                             .done(function (response) {
                                 var $preview = $(response.table),
@@ -70,6 +81,8 @@
 
                                 table.trigger('init.dt');
                             });
+
+                        $customCss.text(ace.getValue());
                     });
                 }
             });
@@ -96,7 +109,11 @@
 
                 $.each(rows, function (y, cell) {
                     var meta = editor.getCellMeta(x, y),
-                        classes = [];
+                        classes = [],
+                        data = {
+                            width:  editor.getColWidth(y),
+                            hidden: editor.mergeCells.mergedCellInfoCollection.getInfo(x, y) !== undefined
+                        };
 
                     if (meta.className !== undefined) {
                         $.each(meta.className.split(' '), function (index, element) {
@@ -106,7 +123,14 @@
                         });
                     }
 
-                    row.cells.push({ data: cell, meta: classes, width: editor.getColWidth(y) });
+                    if ('comment' in meta && meta.comment.length) {
+                        data.comment = meta.comment;
+                    }
+
+                    data.data = cell;
+                    data.meta = classes;
+
+                    row.cells.push(data);
                 });
 
                 // Row height
@@ -120,6 +144,10 @@
 
             var deferred = $.when(
                 app.Models.Tables.setRows(id, data),
+                app.Models.Tables.setMeta(id, {
+                    mergedCells: editor.mergeCells.mergedCellInfoCollection,
+                    css: ace.getValue()
+                }),
                 settings
             );
 
@@ -148,12 +176,8 @@
         );
 
         loading.done(function (/*c,*/ response) {
-            //var columns = c[0].columns,
-            var rows = response.rows;
-            // @todo: cleanup code
-            //if (columns.length > 0) {
-            //    editor.updateSettings({ colHeaders: columns });
-            //}
+            var rows = response.rows,
+                comments = [];
 
             if (rows.length > 0) {
                 var data = [], meta = [], heights = [], widths = [];
@@ -192,6 +216,15 @@
                         if (x === 0) {
                             widths.push(cell.width === undefined ? 100 : cell.width);
                         }
+
+                        if ('comment' in cell && cell.comment.length) {
+                            comments.push({
+                                col:     y,
+                                row:     x,
+                                comment: cell.comment
+                            });
+                        }
+
                     });
 
                     data.push(cells);
@@ -210,6 +243,14 @@
                 $.each(meta, function (i, meta) {
                     editor.setCellMeta(meta.row, meta.col, 'className', meta.className.join(' '));
                 });
+
+                // Comments
+                // Note: comments need to be loaded after editor.loadData() call.
+                if (comments.length) {
+                    editor.updateSettings({
+                        cell: comments
+                    });
+                }
             }
 
             editor.render();
@@ -219,6 +260,16 @@
 
                 // 50 = "f(x)" block width
                 $('#formula').css({width: tableWidth - 50 });
+            });
+
+            app.Models.Tables.getMeta(app.getParameterByName('id')).done(function (response) {
+                var meta = response.meta;
+
+                if ('mergedCells' in meta && meta.mergedCells.length) {
+                    editor.mergeCells = new Handsontable.MergeCells(meta.mergedCells);
+                }
+
+                editor.render();
             });
 
         }).fail(function (error) {
@@ -277,6 +328,8 @@
                     alert('Failed to rename table: ' + error);
                 });
         });
+
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
 }(window.jQuery, window.supsystic.Tables));

@@ -25,6 +25,13 @@
             });
 
             table.trigger('draw.dt');
+
+            // Custom css
+            var $css = $('#' + table.attr('id') + '-css');
+            if ($css.length) {
+                $('head').append($('<style/>').text($css.text()));
+                $css.remove();
+            }
         });
     });
 

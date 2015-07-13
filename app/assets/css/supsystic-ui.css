@@ -11,6 +11,19 @@
     z-index: 19999;
 }
 
+.tooltip.top .tooltip-arrow {
+    border-top-color: #eee !important;
+}
+
+.tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #eee !important;
+}
+
+.tooltip .tooltip-inner {
+    background-color: #eee !important;
+    color: #000 !important;
+}
+
 .supsystic-plugin {
     width: 100%;
     font-size: 15px;
@@ -486,21 +499,25 @@ h2.nav-tab-wrapper, h3.nav-tab-wrapper {
 }
 
 /*textboxes*/
-.supsystic-plugin input[type=text] {
-    background-color: #f6f7f7;
-    color: #252728;
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-    border-top: 1px solid #dfe4e4;
-    padding: 7px 5px;
+.supsystic-plugin input[type="text"],
+.supsystic-plugin input[type="search"],
+.supsystic-text {
+    background-color: #f6f7f7 !important;
+    color: #252728 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    border-top: 1px solid #dfe4e4 !important;
+    padding: 7px 5px !important;
 }
 
 .supsystic-plugin input[type="text"]:focus,
+.supsystic-plugin input[type="search"]:focus,
+.supsystic-text:focus,
 .supsystic-plugin textarea:focus {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border-color: #4ae8ea;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-color: #4ae8ea !important;
 }
 
 .supsystic-plugin input[type="text"].swrInputError,
@@ -622,4 +639,82 @@ h2.nav-tab-wrapper, h3.nav-tab-wrapper {
 
 .float-right {
     float: right;
+}
+
+/* iCheck plugin Minimal skin, black
+----------------------------------- */
+.icheckbox_minimal,
+.iradio_minimal {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    background: url(images/minimal.png) no-repeat;
+    border: none;
+    cursor: pointer;
+}
+
+.icheckbox_minimal {
+    background-position: 0 0;
+}
+.icheckbox_minimal.hover {
+    background-position: -20px 0;
+}
+.icheckbox_minimal.checked {
+    background-position: -40px 0;
+}
+.icheckbox_minimal.disabled {
+    background-position: -60px 0;
+    cursor: default;
+}
+.icheckbox_minimal.checked.disabled {
+    background-position: -80px 0;
+}
+
+.iradio_minimal {
+    background-position: -100px 0;
+}
+.iradio_minimal.hover {
+    background-position: -120px 0;
+}
+.iradio_minimal.checked {
+    background-position: -140px 0;
+}
+.iradio_minimal.disabled {
+    background-position: -160px 0;
+    cursor: default;
+}
+.iradio_minimal.checked.disabled {
+    background-position: -180px 0;
+}
+
+/* HiDPI support */
+@media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+    .icheckbox_minimal,
+    .iradio_minimal {
+        background-image: url(images/minimal@2x.png);
+        -webkit-background-size: 200px 20px;
+        background-size: 200px 20px;
+    }
+}
+
+.supsystic-plugin .widefat.dataTable thead th,
+.supsystic-plugin .widefat.dataTable thead td,
+.supsystic-plugin .widefat.dataTable.no-footer {
+    border-bottom: none;
+}
+
+.supsystic-plugin table.widefat.dataTable {
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.supsystic-plugin table.widefat.dataTable a {
+    color: #000;
+    text-decoration: underline;
 }
