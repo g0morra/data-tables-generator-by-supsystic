@@ -22,3 +22,14 @@
 .supsystic-tables-wrap .supsystic-table td.htBottom {
   vertical-align: bottom;
 }
+.supsystic-tables-wrap .supsystic-tables-export ul {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.supsystic-tables-wrap .supsystic-tables-export ul li {
+  display: inline-block !important;
+  margin-left: 10px;
+}
+.supsystic-tables-wrap .supsystic-tables-export ul li:first-child {
+  margin-left: 0;
+}

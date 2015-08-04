@@ -34,16 +34,22 @@ abstract class SupsysticTables_Ui_Asset implements SupsysticTables_Ui_AssetInter
     protected $cachingAllowed;
 
     /**
+     * @var bool
+     */
+    protected $loaded;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->dependencies = array();
         $this->cachingAllowed = true;
+        $this->loaded = false;
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
             $this->cachingAllowed = false;
-            $this->version = uniqid();
+            $this->version = uniqid('_', false);
         }
     }
 
@@ -156,16 +162,16 @@ abstract class SupsysticTables_Ui_Asset implements SupsysticTables_Ui_AssetInter
         $baseUrl = plugin_dir_url(dirname(__FILE__));
 
         if (is_string($module)) {
-            $module = ucfirst($module);
+            $module = $baseUrl . ucfirst($module);
         } elseif ($module instanceof Rsc_Mvc_Module) {
-            $module = ucfirst($module->getModuleName());
+            $module = $module->getLocationUrl();
         } else {
             throw new InvalidArgumentException(
                 'First parameter must be module name or the instance of the module.'
             );
         }
 
-        return $this->setSource($baseUrl.$module.'/assets/'.$moduleSource);
+        return $this->setSource($module.'/assets/'.$moduleSource);
     }
 
     /**
@@ -298,5 +304,10 @@ abstract class SupsysticTables_Ui_Asset implements SupsysticTables_Ui_AssetInter
         $this->hookName = $hookName;
 
         return $this;
+    }
+
+    public function isLoaded()
+    {
+        return $this->loaded;
     }
 }

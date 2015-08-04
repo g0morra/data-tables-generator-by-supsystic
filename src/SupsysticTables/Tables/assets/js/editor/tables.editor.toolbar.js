@@ -123,6 +123,7 @@
     var methods = {
         bold: function () {
             toggleClass(this.getEditor(), 'bold');
+            //replaceClass(this.getEditor(), 'bold', '');
 
             this.getEditor().render();
         },
@@ -273,6 +274,28 @@
             }
 
             this.getEditor().setDataAtCell(highlighted.row, highlighted.col, '<img src="' + url + '"/>');
+        },
+        addEditComment: function () {
+            var e = this.getEditor(),
+                coords = e.getSelectedRange(),
+                comments = e.getPlugin('comments');
+
+            comments.contextMenuEvent = true;
+            comments.setRange({ from: coords.from });
+            comments.show();
+
+            setTimeout(function () {
+                e.deselectCell();
+                comments.editor.focus();
+            }, 10);
+        },
+        removeComment: function () {
+            var e = this.getEditor(),
+                comments = e.getPlugin('comments'),
+                selection = getValidRange(e.getSelectedRange());
+
+            comments.contextMenuEvent = true;
+            comments.removeCommentAtCell(selection.from.row, selection.from.col);
         }
     };
 
@@ -298,6 +321,7 @@
                 if ($button.data('method') !== undefined && methods[$button.data('method')] !== undefined) {
                     var method = $button.data('method');
 
+                    $button.unbind('click');
                     $button.on('click', function (e) {
                         e.preventDefault();
 
@@ -359,6 +383,14 @@
             }
 
             methods[method].apply(this, Array.prototype.slice.call(arguments, 1, arguments.length));
+        };
+
+        Toolbar.prototype.addMethod = function (name, fn) {
+            methods[name] = fn;
+        };
+
+        Toolbar.prototype.getMethods = function () {
+            return methods;
         };
 
         return Toolbar;

@@ -410,7 +410,10 @@ var ruleJS = (function (root) {
       instance.matrix.updateElementItem(element, {value: value, error: error});
 
       if (['INPUT'].indexOf(nodeName) === -1) {
-        element.innerText = value || error;
+		/*SUPSYSTIC*/
+		// Originaly here was element.innerText and this didn't work in FF browser
+        element.innerHTML = value || error;
+		/*****/
       }
 
       element.value = value || error;

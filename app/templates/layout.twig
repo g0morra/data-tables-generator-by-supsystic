@@ -24,6 +24,14 @@
                                 {{ environment.translate('Tables') }}
                             </a>
                         </li>
+                        {% if environment.getModule('license') != null %}
+                            <li {% if environment.isModule('license') %}class="active"{% endif %}>
+                                <a id="menuItem_tables" href="{{ environment.generateUrl('license') }}">
+                                    <i class="fa fa-fw fa-hand-o-right "></i>
+                                    {{ environment.translate('License') }}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endblock %}
                 </ul>
                 <div class="clear"></div>

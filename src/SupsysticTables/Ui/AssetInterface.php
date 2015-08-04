@@ -13,4 +13,9 @@ interface SupsysticTables_Ui_AssetInterface
      * @return string
      */
     public function getHookName();
+
+    /**
+     * Loads the asset.
+     */
+    public function load();
 }

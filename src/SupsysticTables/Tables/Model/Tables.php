@@ -297,6 +297,8 @@ class SupsysticTables_Tables_Model_Tables extends SupsysticTables_Core_BaseModel
         $table->rows = $this->getRows($table->id);
         $table->settings = unserialize(htmlspecialchars_decode($table->settings));
 
+//        dump($table->rows);
+
         // rev 41
         if (property_exists($table, 'meta')) {
             $table->meta = unserialize(htmlspecialchars_decode($table->meta));

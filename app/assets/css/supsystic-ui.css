@@ -436,22 +436,25 @@ h2.nav-tab-wrapper, h3.nav-tab-wrapper {
 }
 
 /*buttons*/
+.button.supsystic-button,
 .supsystic-plugin .button,
 .supsystic-plugin .button-primary,
 .ui-button,
 .ui-button.ui-state-default {
-    font-size: 15px;
-    height: 35px;
+    font-size: 15px !important;;
+    height: 35px !important;;
     -webkit-border-radius: 0 !important;
     border-radius: 0 !important;
-    color: #28282a;
-    background-color: transparent;
-    -webkit-box-shadow: none;
-    box-shadow: none;
+    color: #28282a !important;;
+    background-color: transparent !important;;
+    -webkit-box-shadow: none !important;;
+    box-shadow: none !important;;
     border: 1px solid #000 !important;
-    line-height: 31px;
+    line-height: 31px !important;
 }
 
+.button.supsystic-button.hover,
+.button.supsystic-button:hover,
 .supsystic-plugin .button.hover,
 .supsystic-plugin .button:hover,
 .supsystic-plugin .button.focus,
@@ -463,6 +466,9 @@ h2.nav-tab-wrapper, h3.nav-tab-wrapper {
     border-color: #4ae8ea !important;
 }
 
+.button.supsystic-button[disabled],
+.button.supsystic-button:disabled,
+.button.supsystic-button.disabled,
 .supsystic-plugin .button[disabled],
 .supsystic-plugin .button:disabled,
 .supsystic-plugin .button.disabled,
@@ -717,4 +723,10 @@ h2.nav-tab-wrapper, h3.nav-tab-wrapper {
 .supsystic-plugin table.widefat.dataTable a {
     color: #000;
     text-decoration: underline;
+}
+
+.supsystic-pro-feature {
+    color: #0074a2 !important;
+    font-size: 10px !important;
+    text-decoration: none !important;
 }

@@ -1,8 +1,8 @@
 === Data Tables Generator by Supsystic ===
 Contributors: supsystic.com
 Tags: csv, csv file, csv to table, excel, table, tablesorter, post, data table, table, database, html, table generator, builder, generator, cells
-Tested up to: 4.2.2
-Stable tag: 1.0.9
+Tested up to: 4.2.3
+Stable tag: 1.1.2
 
 Create and manage beautiful data tables with custom design, navigation with searching and ordering functions. No HTML knowledge is required.
 
@@ -129,6 +129,12 @@ Important! Shortcode must be inserted in a text editor page, and not in the visu
 
 
 == Changelog ==
+
+= 1.1.2 / 04.08.2015 =
+ * Fixed cells metadata loading when cell has comment
+ * Fixed Bold and Italic toolbar buttons
+ * Fixed formulas rendering in the editor
+ * Added charts support
 
 = 1.0.9 / 13.07.2015 =
  * Added Polish language

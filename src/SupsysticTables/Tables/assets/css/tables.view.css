@@ -5,8 +5,8 @@
   float: left;
 }
 .tables-view .table-title-wrap .table-buttons {
-  float: left;
-  margin-top: 8px;
+  position: relative;
+  top: 8px;
 }
 .tables-view .table-title-wrap .table-buttons .button {
   margin-left: 5px;

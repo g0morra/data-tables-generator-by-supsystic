@@ -23,13 +23,25 @@ class SupsysticTables_Ui_Style extends SupsysticTables_Ui_Asset
      */
     public function enqueue()
     {
-        wp_enqueue_style(
+//        wp_enqueue_style(
+//            $this->handle,
+//            $this->source,
+//            $this->dependencies,
+//            $this->version,
+//            $this->media
+//        );
+
+        wp_register_style(
             $this->handle,
             $this->source,
             $this->dependencies,
             $this->version,
             $this->media
         );
+
+        if ($this->hookName === 'admin_enqueue_scripts') {
+            $this->load();
+        }
     }
 
     /**
@@ -51,5 +63,14 @@ class SupsysticTables_Ui_Style extends SupsysticTables_Ui_Asset
         $this->media = (string)$media;
 
         return $this;
+    }
+
+    /**
+     * Loads the asset.
+     */
+    public function load()
+    {
+        wp_enqueue_style($this->handle);
+        $this->loaded = true;
     }
 }

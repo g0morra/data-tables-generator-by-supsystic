@@ -3,6 +3,9 @@
 
 class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
 {
+    /**
+     *
+     */
     public function onInit()
     {
         parent::onInit();
@@ -173,6 +176,12 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                         ->setCachingAllowed($cachingAllowed)
                         ->setVersion($version)
                 );
+
+                $ui->add(
+                    $ui->createScript('supsystic-tables-ace-editor-js')
+                        ->setHookName($hookName)
+                        ->setExternalSource('https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js')
+                );
             }
         }
 
@@ -186,6 +195,15 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
                 ->addDependency('supsystic-tables-datatables-js')
                 ->addDependency('supsystic-tables-rulejs-js')
         );
+    }
+
+    /**
+     * Returns shortcode template name.
+     * @return string
+     */
+    public function getShortcodeTemplate()
+    {
+        return '@tables/shortcode.twig';
     }
 
     /**
@@ -212,7 +230,7 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
         }
 
         return $twig->render(
-            '@tables/shortcode.twig',
+            $this->getShortcodeTemplate(),
             array('table' => $table)
         );
     }
@@ -229,7 +247,28 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
             ), $config->get('shortcode_name'));
         }
 
+        /** @var SupsysticTables_Ui_Module $ui */
+        $ui = $environment->getModule('ui');
+        /** @var SupsysticTables_Ui_Asset[] $assets */
+        $assets = array_filter($ui->getAssets(), array($this, 'filterAssets'));
+
+        if (count($assets) > 0) {
+            foreach ($assets as $asset) {
+                add_action('wp_footer', array($asset, 'load'));
+            }
+        }
+
         return $this->render((int)$attributes['id']);
+    }
+
+    /**
+     * Returns only not loaded assets
+     * @param \SupsysticTables_Ui_Asset $asset
+     * @return bool
+     */
+    public function filterAssets(SupsysticTables_Ui_Asset $asset)
+    {
+        return !$asset->isLoaded() && 'wp_enqueue_scripts' === $asset->getHookName();
     }
 
     private function registerShortcode()
@@ -299,12 +338,6 @@ class SupsysticTables_Tables_Module extends SupsysticTables_Core_BaseModule
             $ui->createStyle('supsystic-tables-rulejs-hot-css')
                 ->setHookName($hookName)
                 ->setModuleSource($this, 'libraries/ruleJS/handsontable.formula.css')
-        );
-
-        $ui->add(
-            $ui->createScript('supsystic-tables-ace-editor-js')
-                ->setHookName($hookName)
-                ->setExternalSource('https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js')
         );
     }
 

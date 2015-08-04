@@ -36,9 +36,21 @@
                                     {{ environment.translate('Delete') }}
                                 </button>
                                 <!-- /#buttonDelete.button -->
+                                {{ environment.getDispatcher().dispatch('tables-view-buttons-left') }}
                             </div>
                             <!-- /.table-buttons-left -->
-                            <div class="table-buttons-right"></div>
+                            <div class="table-buttons-right">
+                                {{ environment.getDispatcher().dispatch('tables-view-buttons-right') }}
+                                <button id="export" class="button {% if environment.isPro() == false %}pro-notify{% endif %}" data-message="{{ environment.translate('Export available only in PRO version.') }}">
+                                    <i class="fa fa-fw fa-upload"></i>
+                                    {{ environment.translate('Export') }}
+                                </button>
+                                <button id="import" class="button {% if environment.isPro() == false %}pro-notify{% endif %}" data-message="{{ environment.translate('Import available only in PRO version.') }}">
+                                    <i class="fa fa-fw fa-download"></i>
+                                    {{ environment.translate('Import') }}
+                                </button>
+
+                            </div>
                             <!-- /.table-buttons-right -->
                         </div>
                         <!-- /.table-buttons -->
@@ -80,6 +92,7 @@
                                 {{ environment.translate('CSS') }}
                             </a>
                         </li>
+                        {{ environment.getDispatcher().dispatch('tabs_rendered', [table]) }}
                     </ul>
                 </div>
                 <!-- /.col-xs-12 -->
@@ -218,21 +231,22 @@
                                 </button>
                             </li>
                         </ul>
-                        {#<ul>#}
-                            {#<li>#}
-                                {#<button {{ tooltip.attr(environment.translate('Comment')) }} data-toolbar="#toolbar-comment">#}
-                                    {#<i class="fa fa-fw fa-comment"></i>#}
-                                {#</button>#}
-                                {#<div id="toolbar-comment" class="toolbar-content">#}
-                                    {#<a href="#" data-method="addComment">#}
-                                        {#<i class="fa fa-fw fa-plus"></i>#}
-                                    {#</a>#}
-                                    {#<a href="#" data-method="removeComment">#}
-                                        {#<i class="fa fa-fw fa-trash-o"></i>#}
-                                    {#</a>#}
-                                {#</div>#}
-                            {#</li>#}
-                        {#</ul>#}
+                        <ul>
+                            <li>
+                                <button {{ tooltip.attr(environment.translate('Comment')) }} data-toolbar="#toolbar-comment">
+                                    <i class="fa fa-fw fa-comment"></i>
+                                </button>
+                                <div id="toolbar-comment" class="toolbar-content">
+                                    <a href="#" data-method="addEditComment">
+                                        <i class="fa fa-fw fa-pencil"></i>
+                                    </a>
+                                    <a href="#" data-method="removeComment">
+                                        <i class="fa fa-fw fa-trash-o"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                        {{ environment.getDispatcher().dispatch('toolbar_rendered', [table]) }}
                     </div>
                     <!-- /#tableToolbar -->
 
@@ -371,6 +385,24 @@
                                     <!-- /#features-state-saving -->
                                 </td>
                             </tr>
+                            {% if environment.isPro() == false %}
+                                <tr>
+                                    <th scope="row">
+                                        <label for="features-export-unavailable">
+                                            {{ environment.translate('Export') }}
+                                            <span>
+                                                <a target="_blank" class="supsystic-pro-feature" href="{{ build_pro_url({ 'utm_medium': 'export_feature' }) }}">
+                                                    {{ environment.translate('PRO option') }}
+                                                </a>
+                                            </span>
+                                        </label>
+                                    </th>
+                                    <td>
+                                        <input type="checkbox" disabled="disabled" id="features-export-unavailable"/>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {{ environment.getDispatcher().dispatch('tables-view-features', [table]) }}
                         </table>
                         <!-- /.form-table -->
                     </div>
@@ -505,8 +537,19 @@ for example:
                     <div id="css-editor">{% if table.meta.css | length > 0 %}{{ table.meta.css }}{% else %}{{ defaultCss }}{% endif %}</div>
                 </div>
             </div>
+            {{ environment.getDispatcher().dispatch('tabs_content_rendered', [table]) }}
         </div>
         <!-- /.container-fluid -->
+        {{ environment.getDispatcher().dispatch('tables-view-footer') }}
+
+        <div id="proPopup" style="display: none;" title="{{ environment.translate('Get PRO version') }}">
+            <p>
+                Please be advised that this option is available only in
+                <a target="_blank" href="{{ build_pro_url({ 'utm_medium': 'import_export' }) }}" style="color: #000;">PRO
+                    version</a>. You can
+                <a target="_blank" href="{{ build_pro_url({ 'utm_medium': 'import_export' }) }}" class="button supsystic-button"><span class="ui-button-text">Get PRO</span></a> today and get this and other PRO option for your tables!
+            </p>
+        </div>
     </div>
     <!-- /.supsystic-item -->
 {% endblock %}

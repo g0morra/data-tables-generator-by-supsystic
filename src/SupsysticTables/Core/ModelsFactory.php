@@ -4,7 +4,7 @@
 class SupsysticTables_Core_ModelsFactory 
 {
     /**
-     * @var SocialSharing_Core_BaseModel[]
+     * @var SupsysticTables_Core_BaseModel[]
      */
     protected $models;
 
@@ -31,9 +31,17 @@ class SupsysticTables_Core_ModelsFactory
     {
         $className = $this->getClassName($model, $module);
 
+        if (!class_exists($className) && $this->environment->isPro()) {
+            $className = $this->getClassName(
+                $model,
+                $module,
+                $this->environment->getConfig()->get('pro_modules_prefix')
+            );
+        }
+
         if (!class_exists($className)) {
             throw new InvalidArgumentException(
-                sprintf('Class "%s" not exists.', $className)
+                sprintf('Cant find class for model %s', $model)
             );
         }
 
@@ -53,7 +61,7 @@ class SupsysticTables_Core_ModelsFactory
     /**
      * @param string $model
      * @param string|Rsc_Mvc_Module $module
-     * @return SocialSharing_Core_BaseModel
+     * @return SupsysticTables_Core_BaseModel
      */
     public function get($model, $module = null)
     {
@@ -74,19 +82,25 @@ class SupsysticTables_Core_ModelsFactory
      * Builds the model name.
      * @param string $model
      * @param string|Rsc_Mvc_Module $module
+     * @param string $prefix
      * @return string
      */
-    protected function getClassName($model, $module)
+    protected function getClassName($model, $module, $prefix = null)
     {
+        if (null === $prefix) {
+            $prefix = $this->environment->getConfig()->get('plugin_prefix');
+        }
+
         if (!$module) {
             $module = $model;
         }
 
-        if ($module instanceof Rsc_Mvc_Module) {
+        if (is_object($module) && $module instanceof Rsc_Mvc_Module) {
+            $e = explode('_', get_class($module));
+            $prefix = array_shift($e);
             $module = $module->getModuleName();
         }
 
-        $prefix = $this->environment->getConfig()->get('plugin_prefix');
         $className = $prefix . '_' . ucfirst($module) . '_Model_' . ucfirst($model);
 
         return $className;

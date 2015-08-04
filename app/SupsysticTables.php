@@ -15,7 +15,7 @@ class SupsysticTables
         }
 
         $pluginPath = dirname(dirname(__FILE__));
-        $environment = new Rsc_Environment('st', '1.0.9', $pluginPath);
+        $environment = new Rsc_Environment('st', '1.1.2', $pluginPath);
 
         /* Configure */
         $environment->configure(
@@ -50,7 +50,7 @@ class SupsysticTables
                 'admin_url'        => admin_url(),
                 'plugin_db_update' => true,
                 'revision_key'     => '_supsystic_tables_rev',
-                'revision'         => 49
+                'revision'         => 60
             )
         );
 

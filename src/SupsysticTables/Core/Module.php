@@ -16,6 +16,7 @@ class SupsysticTables_Core_Module extends SupsysticTables_Core_BaseModule
         parent::onInit();
 
         $this->registerAjaxRequestHandler();
+        $this->registerTwigFunctions();
         $this->update();
 
         add_action('admin_menu', array($this, 'removeDefaultSubMenu'), 999);
@@ -38,6 +39,8 @@ class SupsysticTables_Core_Module extends SupsysticTables_Core_BaseModule
 
         /* jQuery */
         $ui->add($jquery);
+
+        $ui->add($ui->createScript('jquery-ui-dialog')->setHookName('admin_enqueue_scripts'));
 
         /* Core script with common functions in supsystic.Tables namespace */
         $ui->add(
@@ -186,6 +189,23 @@ class SupsysticTables_Core_Module extends SupsysticTables_Core_BaseModule
         );
     }
 
+    public function buildProUrl(array $parameters = array())
+    {
+        $config = $this->getEnvironment()->getConfig();
+        $homepage = $config->get('plugin_homepage');
+        $campaign = $config->get('campaign');
+
+        if (!array_key_exists('utm_source', $parameters)) {
+            $parameters['utm_source'] = 'plugin';
+        }
+
+        if (!array_key_exists('utm_campaign', $parameters)) {
+            $parameters['utm_campaign'] = $campaign;
+        }
+
+        return $homepage . '?' . http_build_query($parameters);
+    }
+
     /**
      * Registers the ajax request handler
      */
@@ -242,5 +262,19 @@ class SupsysticTables_Core_Module extends SupsysticTables_Core_BaseModule
         }
 
         update_option($config->get('revision_key'), $revision['current']);
+    }
+
+    private function registerTwigFunctions()
+    {
+        $twig = $this->getEnvironment()->getTwig();
+        $twig->addFunction(
+            new Twig_SimpleFunction(
+                'build_pro_url', array($this, 'buildProUrl')
+            )
+        );
+
+        if (function_exists('dump') && $this->getEnvironment()->isDev()) {
+            $twig->addFunction(new Twig_SimpleFunction('dump', 'dump'));
+        }
     }
 }

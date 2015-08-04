@@ -6,6 +6,16 @@
         ace.setTheme("ace/theme/monokai");
         ace.getSession().setMode("ace/mode/css");
 
+        var isFormula = function (value) {
+            if (value) {
+                if (value[0] === '=') {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         function initializeEditor() {
             var container = document.getElementById('tableEditor');
 
@@ -19,7 +29,7 @@
                 manualRowResize:       true,
                 mergeCells:            true,
                 outsideClickDeselects: false,
-                renderer:              'html',
+                renderer:              Handsontable.renderers.HtmlRenderer,
                 rowHeaders:            true,
                 startCols:             app.getParameterByName('cols') || 5,
                 startRows:             app.getParameterByName('rows') || 5
@@ -129,6 +139,18 @@
 
                     data.data = cell;
                     data.meta = classes;
+                    data.calculatedValue = null;
+
+                    if (isFormula(cell)) {
+                        var item = editor.plugin.matrix.getItem(editor.plugin.utils.translateCellCoords({
+                            row: x,
+                            col: y
+                        }));
+
+                        if (item !== undefined) {
+                            data.calculatedValue = item.value;
+                        }
+                    }
 
                     row.cells.push(data);
                 });
@@ -160,11 +182,54 @@
 
         var editor, tableId = app.getParameterByName('id');
         editor = initializeEditor();
-
-        /* DEBUG */
         window.editor = editor;
 
+        // FORMULAS RENDER FIX
+        editor.addHook('afterChange', function (changes) {
+            if (!$.isArray(changes) || !changes.length) {
+                return;
+            }
+
+            $.each(changes, function (index, changeSet) {
+                var row = changeSet[0],
+                    col = changeSet[1],
+                    value = changeSet[3],
+                    renderer = Handsontable.renderers.HtmlRenderer;
+
+                if (isFormula(value)) {
+                    renderer = Handsontable.TextCell.renderer;
+                }
+
+                editor.setCellMeta(row, col, 'renderer', renderer)
+            });
+
+            editor.render();
+        });
+
+        editor.addHook('afterLoadData', function () {
+            var data = editor.getData();
+
+            if (!data.length) {
+                return;
+            }
+
+            $.each(data, function (row, columns) {
+                $.each(columns, function (col, cell) {
+                    if (isFormula(cell)) {
+                        editor.setCellMeta(row, col, 'renderer', Handsontable.TextCell.renderer);
+                    }
+                });
+            });
+
+            editor.render();
+        });
+
+        // END FORMULA RENDER FIX
+
+        app.Editor.Hot = editor;
+
         var toolbar = new app.Editor.Toolbar('#tableToolbar', editor);
+        app.Editor.Tb = toolbar;
         toolbar.subscribe();
 
         var formula = new app.Editor.Formula(editor);
@@ -201,7 +266,7 @@
                         if ('meta' in cell && cell.meta !== undefined) {
                             var color = /color\-([0-9abcdef]{6})/.exec(cell.meta),
                                 background = /bg\-([0-9abcdef]{6})/.exec(cell.meta);
-                            
+
                             if (null !== color) {
                                 $style.html($style.html() + ' .'+color[0]+' {color:#'+color[1]+'}');
                             }
@@ -239,11 +304,6 @@
                 // Load extracted data.
                 editor.loadData(data);
 
-                // Load extracted metadata.
-                $.each(meta, function (i, meta) {
-                    editor.setCellMeta(meta.row, meta.col, 'className', meta.className.join(' '));
-                });
-
                 // Comments
                 // Note: comments need to be loaded after editor.loadData() call.
                 if (comments.length) {
@@ -251,6 +311,11 @@
                         cell: comments
                     });
                 }
+
+                // Load extracted metadata.
+                $.each(meta, function (i, meta) {
+                    editor.setCellMeta(meta.row, meta.col, 'className', meta.className.join(' '));
+                });
             }
 
             editor.render();
@@ -264,6 +329,10 @@
 
             app.Models.Tables.getMeta(app.getParameterByName('id')).done(function (response) {
                 var meta = response.meta;
+
+                if (typeof meta !== 'object') {
+                    return;
+                }
 
                 if ('mergedCells' in meta && meta.mergedCells.length) {
                     editor.mergeCells = new Handsontable.MergeCells(meta.mergedCells);
@@ -330,6 +399,21 @@
         });
 
         $('[data-toggle="tooltip"]').tooltip();
+
+        // Pro notify
+        var $notification = $('#proPopup').dialog({
+            autoOpen: false,
+            width:    480,
+            modal:    true,
+            buttons:  {
+                Close: function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+        $('.pro-notify').on('click', function () {
+            $notification.dialog('open');
+        });
     });
 
 }(window.jQuery, window.supsystic.Tables));
